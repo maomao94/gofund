@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/gotomicro/ego"
-	"github.com/gotomicro/ego/core/elog"
-	"github.com/gotomicro/ego/server/egovernor"
 	"waf-srv/invoker"
 	"waf-srv/job"
 	"waf-srv/router"
+
+	"github.com/gotomicro/ego"
+	"github.com/gotomicro/ego/core/elog"
+	"github.com/gotomicro/ego/server/egovernor"
 )
 
+//  export EGO_DEBUG=true && go run main.go --config=config/dev.toml
 func main() {
 	if err := ego.New().
 		Invoker(invoker.Init).

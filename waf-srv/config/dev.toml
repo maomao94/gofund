@@ -1,8 +1,8 @@
 [server.http]
 port = 9111
-[redis.user]
+[redis.waf]
 debug = true
-addr = "172.22.0.1:6479"
+addr = "127.0.0.1:6379"
 [server.grpc]
 port = 9112
 enableAccessInterceptorReq = true
