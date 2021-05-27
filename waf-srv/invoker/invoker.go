@@ -2,10 +2,11 @@ package invoker
 
 import (
 	"fmt"
+	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
+
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
 	"github.com/gotomicro/ego/core/elog"
-	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -25,7 +26,7 @@ func Init() error {
 }
 
 // 记录grpc error信息
-func Error(code errcodepb.ErrCode, err error) error {
+func Error(code errcodepb.ErrCode.ErrCode, err error) error {
 	Logger.Error("grpc error: ", zap.Int32("code", int32(code)), zap.Error(err))
 	var cause string
 	if err != nil {
