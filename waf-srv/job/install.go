@@ -3,6 +3,9 @@ package job
 import (
 	"context"
 	"fmt"
+
+	"github.com/gotomicro/ego/core/etrace"
+
 	"github.com/gotomicro/ego/task/ejob"
 )
 
@@ -14,6 +17,7 @@ func InstallComponent() *ejob.Component {
 }
 
 func runInstall(ctx context.Context) error {
+	fmt.Println("i am job runner, traceId: ", etrace.ExtractTraceID(ctx))
 	//models := []interface{}{
 	//	&mysql.Topic{},
 	//	&mysql.TopicCate{},
