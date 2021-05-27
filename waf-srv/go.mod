@@ -2,4 +2,10 @@ module waf-srv
 
 go 1.16
 
-require github.com/gotomicro/ego v0.5.6
+require (
+	github.com/gotomicro/ego v0.5.6
+	github.com/gotomicro/ego-component/egorm v0.2.0
+	github.com/gotomicro/ego-component/eredis v0.2.2
+	go.uber.org/zap v1.15.0
+	google.golang.org/grpc v1.29.1
+)

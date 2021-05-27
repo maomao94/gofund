@@ -2,24 +2,19 @@ package invoker
 
 import (
 	"fmt"
-
-	"github.com/gotomicro/ego-component/eetcd"
-	"github.com/gotomicro/ego-component/eetcd/registry"
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
-	"github.com/gotomicro/ego-component/etoken"
-	"github.com/gotomicro/ego-component/ewechat"
 	"github.com/gotomicro/ego/core/elog"
-	"github.com/gotomicro/fast-gocn/proto/gocn/gen/errcodepb"
+	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 var (
-	Logger       *elog.Component
-	Db           *egorm.Component
-	RedisStub    *eredis.Component
+	Logger    *elog.Component
+	Db        *egorm.Component
+	RedisStub *eredis.Component
 )
 
 func Init() error {

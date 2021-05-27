@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dirs=`find gocn -type d`
+dirs=`find fund -type d`
 for dir in $dirs; do
     # 只处理存在proto文件的目录
     if [ "$(ls ${dir}/*.proto 2>/dev/null)" ]; then

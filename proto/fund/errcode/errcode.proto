@@ -1,6 +1,6 @@
 syntax = "proto3";
-option go_package = "gofund/gen/errcodepb";
-package com.github.gotomicro.fastgocn.proto.errcode;
+option go_package = "fund/gen/errcodepb";
+package com.github.hehanpeng.gofund.proto.errcode;
 import "google/protobuf/descriptor.proto";
 
 extend google.protobuf.EnumValueOptions {
