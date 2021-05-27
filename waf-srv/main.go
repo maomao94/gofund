@@ -10,7 +10,7 @@ import (
 	"github.com/gotomicro/ego/server/egovernor"
 )
 
-//  export EGO_DEBUG=true && go run main.go --config=config/dev.toml
+//  export EGO_DEBUG=true && go run main.go --config=config/dev.toml --job=install
 func main() {
 	if err := ego.New().
 		Invoker(invoker.Init).
