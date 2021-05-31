@@ -3,6 +3,8 @@ package job
 import (
 	"context"
 	"fmt"
+	"waf-srv/model"
+	"waf-srv/pkg/invoker"
 
 	"github.com/gotomicro/ego/task/ejob"
 )
@@ -15,17 +17,14 @@ func InstallComponent() *ejob.Component {
 }
 
 func runInstall(ctx context.Context) error {
-	//models := []interface{}{
-	//	&mysql.Topic{},
-	//	&mysql.TopicCate{},
-	//	&mysql.Abilities{},
-	//}
-	//gormdb := invoker.Db.Debug()
-	//gormdb.SingularTable(true)
-	//err := gormdb.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(models...).Error
-	//if err != nil {
-	//	return err
-	//}
+	models := []interface{}{
+		&model.SysApi{},
+	}
+	gormdb := invoker.Db.Debug()
+	err := gormdb.AutoMigrate(models...)
+	if err != nil {
+		return err
+	}
 	fmt.Println("create table ok")
 	return nil
 }

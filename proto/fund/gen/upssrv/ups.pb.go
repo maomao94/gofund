@@ -24,7 +24,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// The request message containing the user's name.
+// The req message containing the user's name.
 type HelloRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -72,7 +72,7 @@ func (x *HelloRequest) GetName() string {
 	return ""
 }
 
-// The response message containing the greetings
+// The resp message containing the greetings
 type HelloReply struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

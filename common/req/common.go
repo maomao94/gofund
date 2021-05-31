@@ -1,4 +1,4 @@
-package request
+package req
 
 // Paging common input parameter structure
 type PageInfo struct {

@@ -1,4 +1,4 @@
-package response
+package resp
 
 import (
 	"net/http"
@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Response struct {
+type Resp struct {
 	Code int         `json:"code"`
 	Data interface{} `json:"data"`
 	Msg  string      `json:"msg"`
@@ -19,7 +19,7 @@ const (
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
 	// 开始时间
-	c.JSON(http.StatusOK, Response{
+	c.JSON(http.StatusOK, Resp{
 		code,
 		data,
 		msg,
