@@ -14,6 +14,7 @@ import (
 func main() {
 	if err := ego.New().
 		Invoker(invoker.Init).
+		Registry(invoker.EtcdRegistry).
 		Job(
 			job.InstallComponent(),
 		).

@@ -9,11 +9,10 @@ enableAccessInterceptorReq = true
 enableAccessInterceptorRes = true
 [server.governor]
 port = 9213
-#[etcd]
-#addrs=["172.22.0.1:2379"]
-#[registry]
-#connectTimeout = "1s"
-#secure = false
+[etcd]
+addrs=["127.0.0.1:2379"]
+[registry]
+connectTimeout = "1s"
 [mysql.waf]
 connMaxLifetime = "300s"
 debug = true

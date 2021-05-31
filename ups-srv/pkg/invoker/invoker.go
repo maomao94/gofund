@@ -3,8 +3,11 @@ package invoker
 import (
 	"fmt"
 
+	"github.com/gotomicro/ego-component/eetcd"
+	"github.com/gotomicro/ego-component/eetcd/registry"
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
+	"github.com/gotomicro/ego/client/egrpc/resolver"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
@@ -13,15 +16,22 @@ import (
 )
 
 var (
-	Logger    *elog.Component
-	Db        *egorm.Component
-	RedisStub *eredis.Component
+	Logger       *elog.Component
+	Db           *egorm.Component
+	RedisStub    *eredis.Component
+	EtcdClient   *eetcd.Component
+	EtcdRegistry *registry.Component
 )
 
 func Init() error {
 	Logger = elog.DefaultLogger
 	Db = egorm.Load("mysql.waf").Build()
 	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
+	EtcdClient = eetcd.Load("etcd").Build()
+	EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
+
+	// 必须注册在grpc前面
+	resolver.Register("etcd", EtcdRegistry)
 	return nil
 }
 
