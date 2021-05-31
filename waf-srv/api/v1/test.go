@@ -30,8 +30,13 @@ func Test(c *gin.Context) {
 func Hello(c *gin.Context) {
 	ctx := context.Background()
 	// try to obtain my Lock
-	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, "my-key", 10*time.Second)
-	defer lock.Release(ctx)
+	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, "my-key", 10*time.Second, eredis.WithLockOptionRetryStrategy(
+		eredis.LimitRetry(
+			eredis.LinearBackoffRetry(1*time.Second), 6)))
+	defer func() {
+		lock.Release(ctx)
+		invoker.Logger.Info("Release Lock!")
+	}()
 	if err == eredis.ErrNotObtained {
 		invoker.Logger.Error("Could not obtain Lock!", elog.FieldErr(err))
 		resp.FailWithMessage("Could not obtain Lock!", c)
