@@ -12,3 +12,8 @@ require (
 	go.uber.org/zap v1.17.0
 	google.golang.org/grpc v1.29.1
 )
+
+replace (
+	github.com/hehanpeng/gofund/common => ../common
+	github.com/hehanpeng/gofund/proto => ../proto
+)
