@@ -14,13 +14,12 @@ import (
 func main() {
 	if err := ego.New().
 		Invoker(invoker.Init).
-		Registry(invoker.EtcdRegistry).
+		//Registry(invoker.EtcdRegistry).
 		Job(
 			job.InstallComponent(),
 		).
 		Serve(
 			egovernor.Load("server.governor").Build(),
-			router.ServeGRPC(),
 			router.GetRouter(),
 		).
 		Run(); err != nil {

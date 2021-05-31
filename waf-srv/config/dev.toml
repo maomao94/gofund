@@ -3,17 +3,17 @@ port = 9111
 [redis.waf]
 debug = true
 addr = "127.0.0.1:6379"
-[server.grpc]
-port = 9112
+#[server.grpc]
+#port = 9112
 enableAccessInterceptorReq = true
 enableAccessInterceptorRes = true
 [server.governor]
 port = 9113
-[etcd]
-addrs=["127.0.0.1:2379"]
-[registry]
-connectTimeout = "1s"
-secure = false
+#[etcd]
+#addrs=["127.0.0.1:2379"]
+#[registry]
+#connectTimeout = "1s"
+#secure = false
 [mysql.waf]
 connMaxLifetime = "300s"
 debug = true
