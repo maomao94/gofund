@@ -1,15 +1,13 @@
 package router
 
 import (
-	"waf-srv/pkg/invoker"
-	"waf-srv/pkg/router/api"
-	"waf-srv/pkg/router/core"
-
 	"github.com/gotomicro/ego/server/egin"
+	"waf-srv/api/v1"
+	"waf-srv/pkg/invoker"
 )
 
 func GetRouter() *egin.Component {
 	r := invoker.Gin
-	r.GET("/api/test", core.Handle(api.Test))
+	r.GET("/api/test", v1.Test)
 	return r
 }
