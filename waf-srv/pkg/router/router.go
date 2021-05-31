@@ -13,6 +13,8 @@ func GetRouter() *egin.Component {
 	PublicGroup := Router.Group("api")
 	{
 		InitTtoInfoRouter(PublicGroup)
+		PublicGroup.GET("test", v1.Test)
+		PublicGroup.GET("hello", v1.Hello)
 	}
 	return Router
 }
