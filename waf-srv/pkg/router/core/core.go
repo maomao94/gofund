@@ -78,9 +78,9 @@ func (c *Context) JSONE(code int, msg string, data error) {
 	j := new(Res)
 	j.Code = code
 	j.Msg = msg
-	//if data != nil {
-	//	j.Data = data.Error()
-	//}
+	if data != nil {
+		j.Data = data.Error()
+	}
 	c.Context.JSON(http.StatusOK, j)
 	return
 }

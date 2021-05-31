@@ -14,5 +14,5 @@ import (
 func (s *Ups) SayHello(ctx context.Context, in *upssrv.HelloRequest) (*upssrv.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
 	//return &helloworld.HelloReply{Message: "Hello " + in.GetName()}, nil
-	return nil, invoker.Error(errcodepb.ErrCode_LoginWechatCreateUser, errors.New(errcodepb.ErrCode_LoginWechatCreateUser.String()))
+	return nil, invoker.Error(errcodepb.ErrCode_OK, errors.New(errcodepb.ErrCode_OK.String()))
 }

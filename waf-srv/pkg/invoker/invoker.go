@@ -5,7 +5,7 @@ import (
 
 	"github.com/gotomicro/ego-component/eetcd"
 	"github.com/gotomicro/ego-component/eetcd/registry"
-
+	"github.com/gotomicro/ego/client/egrpc/resolver"
 	"github.com/gotomicro/ego/server/egin"
 
 	"github.com/hehanpeng/gofund/proto/fund/gen/upssrv"
@@ -17,7 +17,6 @@ import (
 	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/status"
 )
 

@@ -13,6 +13,7 @@ port = 9213
 addrs=["127.0.0.1:2379"]
 [registry]
 connectTimeout = "1s"
+name = "ups_srv"
 [mysql.waf]
 connMaxLifetime = "300s"
 debug = true
