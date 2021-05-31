@@ -1,8 +1,11 @@
 package api
 
 import (
+	"waf-srv/model/response"
 	"waf-srv/pkg/invoker"
 	"waf-srv/pkg/router/core"
+
+	"google.golang.org/grpc/status"
 
 	"github.com/hehanpeng/gofund/proto/fund/gen/upssrv"
 )
@@ -12,8 +15,8 @@ func Test(c *core.Context) {
 		Name: "test",
 	})
 	if err != nil {
-		c.JSONE(1, "测试rpc失败", err)
+		response.FailWithMessage(status.Code(err).String(), c.Context)
 		return
 	}
-	c.JSONOK(reply)
+	response.OkWithData(reply, c.Context)
 }
