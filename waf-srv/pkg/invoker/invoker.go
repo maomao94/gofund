@@ -3,8 +3,11 @@ package invoker
 import (
 	"fmt"
 
+	"github.com/hehanpeng/gofund/proto/fund/gen/upssrv"
+
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
+	"github.com/gotomicro/ego/client/egrpc"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
@@ -13,15 +16,18 @@ import (
 )
 
 var (
-	Logger    *elog.Component
-	Db        *egorm.Component
-	RedisStub *eredis.Component
+	Logger     *elog.Component
+	Db         *egorm.Component
+	RedisStub  *eredis.Component
+	UpsSrvGrpc upssrv.UpsClient
 )
 
 func Init() error {
 	Logger = elog.DefaultLogger
 	Db = egorm.Load("mysql.waf").Build()
 	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
+	userConn := egrpc.Load("grpc.upssrv").Build().ClientConn
+	UpsSrvGrpc = upssrv.NewUpsClient(userConn)
 	return nil
 }
 

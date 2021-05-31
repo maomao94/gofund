@@ -21,3 +21,5 @@ dsn = "root:123456@tcp(127.0.0.1:3306)/waf?charset=utf8mb4&collation=utf8mb4_gen
 level = "panic"
 maxIdleConns = 50
 maxOpenConns = 100
+[grpc.upssrv]
+addr = "etcd:///ups-srv"
