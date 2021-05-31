@@ -18,7 +18,8 @@ func InstallComponent() *ejob.Component {
 
 func runInstall(ctx context.Context) error {
 	models := []interface{}{
-		&model.SysApi{},
+		//&model.SysApi{},
+		&model.TtoInfo{},
 	}
 	gormdb := invoker.Db.Debug()
 	err := gormdb.AutoMigrate(models...)

@@ -16,7 +16,6 @@ type TtoInfo struct {
 	BizType      string    `json:"bizType" form:"bizType" gorm:"column:biz_type;comment:业务类型;type:varchar(64);size:64;"`
 	CallIp       string    `json:"callIp" form:"callIp" gorm:"column:call_ip;comment:回调ip;type:varchar(64);size:64;"`
 	CallMethod   string    `json:"callMethod" form:"callMethod" gorm:"column:call_method;comment:回调方法;type:varchar(128);size:128;"`
-	ExecuteTime  time.Time `json:"executeTime" form:"executeTime" gorm:"column:execute_time;comment:执行时间;type:timestamp;"`
 	ExpiredTime  int       `json:"expiredTime" form:"expiredTime" gorm:"column:expired_time;comment:过期时间,单位毫秒;type:bigint;size:19;"`
 	Ext1         string    `json:"ext1" form:"ext1" gorm:"column:ext1;comment:备用1;type:varchar(128);size:128;"`
 }
