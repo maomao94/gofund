@@ -3,8 +3,11 @@ package v1
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/gotomicro/ego-component/eredis"
+	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
 	"github.com/hehanpeng/gofund/common/resp"
+	"time"
 	"waf-srv/pkg/invoker"
 )
 
@@ -25,5 +28,20 @@ func Test(c *gin.Context) {
 }
 
 func Hello(c *gin.Context) {
+	ctx := context.Background()
+	// try to obtain my Lock
+	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, "my-key", 10*time.Second)
+	defer lock.Release(ctx)
+	if err == eredis.ErrNotObtained {
+		invoker.Logger.Error("Could not obtain Lock!", elog.FieldErr(err))
+		resp.FailWithMessage("Could not obtain Lock!", c)
+		return
+	} else if err != nil {
+		invoker.Logger.Error("error", elog.FieldErr(err))
+		resp.FailWithMessage("error", c)
+		return
+	}
+	invoker.Logger.Info("I have a Lock!")
+	time.Sleep(20 * time.Second)
 	resp.Ok(c)
 }
