@@ -57,7 +57,5 @@ func HelloLock(c *gin.Context) {
 func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
-	invoker.Logger.Infof("hello tto: %v", ttoInfo)
-	time.Sleep(3 * time.Second)
 	api.Fail(c)
 }

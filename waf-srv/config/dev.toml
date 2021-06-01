@@ -1,5 +1,5 @@
 [logger.default]
-level = "info"
+level = "debug"
 [server.http]
 port = 9111
 [http.ups]

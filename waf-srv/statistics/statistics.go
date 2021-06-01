@@ -91,9 +91,9 @@ func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 	endTime := uint64(time.Now().UnixNano())
 	requestTime = endTime - statTime
 	calculateData(processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIDLen, errCode)
-	invoker.Logger.Info("*************************  结果 stat  ****************************")
-	invoker.Logger.Infof("请求总数: %d 总请求时间: %.3f秒 successNum: %d, failureNum: %d", successNum+failureNum, float64(requestTime)/1e9, successNum, failureNum)
-	invoker.Logger.Info("*************************  结果 end   ****************************")
+	invoker.Logger.Debug("*************************  结果 stat  ****************************")
+	invoker.Logger.Debugf("请求总数: %d 总请求时间: %.3f秒 successNum: %d, failureNum: %d", successNum+failureNum, float64(requestTime)/1e9, successNum, failureNum)
+	invoker.Logger.Debug("*************************  结果 end   ****************************")
 }
 
 // calculateData 计算数据
@@ -118,9 +118,9 @@ func calculateData(processingTime, requestTime, maxTime, minTime, successNum, fa
 // header 打印表头信息
 func header() {
 	// 打印的时长都为毫秒 总请数
-	invoker.Logger.Info("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
-	invoker.Logger.Info(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│ 错误码")
-	invoker.Logger.Info("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
+	invoker.Logger.Debug("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
+	invoker.Logger.Debug(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│ 错误码")
+	invoker.Logger.Debug("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
 	return
 }
 
@@ -129,7 +129,7 @@ func table(successNum, failureNum uint64, errCode map[int]int, maxTimeFloat, min
 	// 打印的时长都为毫秒
 	result := fmt.Sprintf("%4.0fs│%7d│%7d│%7d│%8.2f│%8.2f│%v",
 		requestTimeFloat, chanIDLen, successNum, failureNum, maxTimeFloat, minTimeFloat, printMap(errCode))
-	invoker.Logger.Info(result)
+	invoker.Logger.Debug(result)
 	return
 }
 
