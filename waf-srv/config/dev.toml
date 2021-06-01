@@ -2,6 +2,8 @@
 port = 9111
 [http.ups]
 addr = "http://127.0.0.1:9211" # 开启后并加上export EGO_DEBUG=true，可以看到每次http请求，配置名、地址、耗时、请求数据、响应数据
+[http.waf]
+addr = "http://127.0.0.1:9111" # 开启后并加上export EGO_DEBUG=true，可以看到每次http请求，配置名、地址、耗时、请求数据、响应数据
 debug = true
 [cron.waf]
 enableDistributedTask = true			# 是否分布式任务，默认否，如果存在分布式任务，会只执行该定时任务

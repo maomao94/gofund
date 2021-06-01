@@ -22,6 +22,7 @@ var (
 	Db          *egorm.Component
 	RedisStub   *eredis.Component
 	UpsHttpComp *ehttp.Component
+	WafHttpComp *ehttp.Component
 	EcronLocker *ecronlock.Component
 	//UpsSrvGrpc   upssrv.UpsClient
 	//EtcdClient   *eetcd.Component
@@ -36,7 +37,9 @@ func Init() error {
 	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
 	EcronLocker = ecronlock.DefaultContainer().Build(ecronlock.WithClient(RedisStub))
 	UpsHttpComp = ehttp.Load("http.ups").Build()
+	WafHttpComp = ehttp.Load("http.waf").Build()
 	RegisterCallSrvHttpComp("ups", UpsHttpComp)
+	RegisterCallSrvHttpComp("waf", UpsHttpComp)
 	//EtcdClient = eetcd.Load("etcd").Build()
 	//EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
 
