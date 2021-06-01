@@ -18,6 +18,7 @@ func main() {
 		Job(
 			job.InstallComponent(),
 		).
+		Cron(job.CronJob1(), job.CronJob2()).
 		Serve(
 			egovernor.Load("server.governor").Build(),
 			router.GetRouter(),
