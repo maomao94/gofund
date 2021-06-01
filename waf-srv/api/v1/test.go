@@ -2,16 +2,18 @@ package v1
 
 import (
 	"context"
+	"time"
+	"waf-srv/model"
+	"waf-srv/pkg/invoker"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gotomicro/ego-component/eredis"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
 	"github.com/hehanpeng/gofund/common/resp"
-	"time"
-	"waf-srv/pkg/invoker"
 )
 
-func Test(c *gin.Context) {
+func TestUps(c *gin.Context) {
 	span, ctx := etrace.StartSpanFromContext(context.Background(), "callHTTP()")
 	defer span.Finish()
 
@@ -27,7 +29,7 @@ func Test(c *gin.Context) {
 	resp.OkWithData(info.String(), c)
 }
 
-func Hello(c *gin.Context) {
+func HelloLock(c *gin.Context) {
 	ctx := context.Background()
 	// try to obtain my Lock
 	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, "my-key", 10*time.Second, eredis.WithLockOptionRetryStrategy(
@@ -48,5 +50,12 @@ func Hello(c *gin.Context) {
 	}
 	invoker.Logger.Info("I have a Lock!")
 	//time.Sleep(5 * time.Second)
+	resp.Ok(c)
+}
+
+func Hello(c *gin.Context) {
+	var ttoInfo model.TtoInfo
+	_ = c.ShouldBindJSON(&ttoInfo)
+	invoker.Logger.Infof("hello tto: v%", ttoInfo)
 	resp.Ok(c)
 }

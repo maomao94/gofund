@@ -1,10 +1,11 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gotomicro/ego/server/egin"
 	v1 "waf-srv/api/v1"
 	"waf-srv/pkg/invoker"
+
+	"github.com/gin-gonic/gin"
+	"github.com/gotomicro/ego/server/egin"
 )
 
 func GetRouter() *egin.Component {
@@ -13,8 +14,9 @@ func GetRouter() *egin.Component {
 	PublicGroup := Router.Group("api")
 	{
 		InitTtoInfoRouter(PublicGroup)
-		PublicGroup.GET("test", v1.Test)
-		PublicGroup.GET("hello", v1.Hello)
+		PublicGroup.GET("testUps", v1.TestUps)
+		PublicGroup.GET("helloLock", v1.HelloLock)
+		PublicGroup.POST("hello", v1.Hello)
 	}
 	return Router
 }
