@@ -121,7 +121,9 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 		invoker.Logger.Error("callSrvHttpComp is not register", zap.String("key", ttoInfo.CallSrvName))
 		return errors.New("callSrvHttpComp is not register")
 	}
-	span, ctx := etrace.StartSpanFromContext(context.Background(), "callHTTP()")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	span, ctx := etrace.StartSpanFromContext(ctx, "callHTTP()")
 	defer span.Finish()
 	req := callSrvHttpComp.R()
 	// Inject traceId Into Header
