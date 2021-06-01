@@ -18,19 +18,8 @@ delayExecType = "skip"					# skip，queue，concurrent，如果上一个任务�
 [redis.waf]
 debug = true
 addr = "127.0.0.1:6379"
-#[server.grpc]
-#port = 9112
-#enableAccessInterceptorReq = true
-#enableAccessInterceptorRes = true
-#[grpc.upssrv]
-#addr = "etcd:///ups-srv"
 [server.governor]
 port = 9113
-#[etcd]
-#addrs=["127.0.0.1:2379"]
-#[registry]
-#connectTimeout = "1s"
-#secure = false
 [mysql.waf]
 connMaxLifetime = "300s"
 debug = true
@@ -38,3 +27,15 @@ dsn = "root:123456@tcp(127.0.0.1:3306)/waf?charset=utf8mb4&collation=utf8mb4_gen
 level = "panic"
 maxIdleConns = 50
 maxOpenConns = 100
+#[server.grpc]
+#port = 9112
+#enableAccessInterceptorReq = true
+#enableAccessInterceptorRes = true
+#[etcd]
+#addrs=["127.0.0.1:2379"]
+#[registry]
+#connectTimeout = "1s"
+#secure = false
+#name = "wafs_srv"
+#[grpc.upssrv]
+#addr = "etcd:///ups-srv"

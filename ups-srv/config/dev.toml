@@ -7,17 +7,8 @@ port = 9211
 [redis.waf]
 debug = true
 addr = "127.0.0.1:6379"
-#[server.grpc]
-#port = 9212
-#enableAccessInterceptorReq = true
-#enableAccessInterceptorRes = true
 [server.governor]
 port = 9213
-#[etcd]
-#addrs=["127.0.0.1:2379"]
-#[registry]
-#connectTimeout = "1s"
-#name = "ups_srv"
 [mysql.waf]
 connMaxLifetime = "300s"
 debug = true
@@ -25,3 +16,13 @@ dsn = "root:123456@tcp(127.0.0.1:3306)/ups?charset=utf8mb4&collation=utf8mb4_gen
 level = "panic"
 maxIdleConns = 50
 maxOpenConns = 100
+#[server.grpc]
+#port = 9212
+#enableAccessInterceptorReq = true
+#enableAccessInterceptorRes = true
+#[etcd]
+#addrs=["127.0.0.1:2379"]
+#[registry]
+#connectTimeout = "1s"
+#secure = false
+#name = "ups_srv"
