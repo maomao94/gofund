@@ -1,5 +1,5 @@
 [logger.default]
-level = "debug"
+level = "info"
 [trace.jaeger] # 启用链路的核心配置
 ServiceName = "waf-srv"
 [server.http]
