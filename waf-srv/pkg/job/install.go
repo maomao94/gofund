@@ -7,6 +7,7 @@ import (
 	"time"
 	"waf-srv/model"
 	"waf-srv/pkg/invoker"
+	"waf-srv/service"
 
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
@@ -59,14 +60,6 @@ func CronJob2() ecron.Ecron {
 		elog.Info("info job2", elog.FieldTid(etrace.ExtractTraceID(ctx)))
 		elog.Warn("warn job2", elog.FieldTid(etrace.ExtractTraceID(ctx)))
 		fmt.Println("run job2", elog.FieldTid(etrace.ExtractTraceID(ctx)))
-		req := invoker.CallSrvHttpComp["wafs"].R()
-		// Inject traceId Into Header
-		c1 := etrace.HeaderInjector(ctx, req.Header)
-		info, err := req.SetContext(c1).Get("/api/hello")
-		if err != nil {
-			return err
-		}
-		elog.Info(info.String())
 		return nil
 	}
 
@@ -88,7 +81,7 @@ func CronTtoInfo() ecron.Ecron {
 		}
 		// 执行转发逻辑
 		for _, ttoinfo := range ttoinfos {
-			invoker.Logger.Infof("CronTtoInfo info: %+v", ttoinfo)
+			service.DealCronTtoInfo(ctx, ttoinfo)
 		}
 		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", utils.MillisecondCost(startTime))
 		return nil
