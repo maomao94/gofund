@@ -7,6 +7,7 @@ import (
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
 	"github.com/gotomicro/ego/task/ecron"
+	utils "github.com/hehanpeng/gofund/common/util"
 	"go.uber.org/zap"
 	"time"
 	"waf-srv/model"
@@ -77,7 +78,7 @@ func CronJob2() ecron.Ecron {
 // 超时转发
 func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
-		statTime := uint64(time.Now().UnixNano())
+		startTime := uint64(time.Now().UnixNano())
 		var ttoinfos []model.TtoInfo
 		//   example.createCriteria()
 		//                    .andEqualTo(TtoInf.TTO_STATUS, ForwardParamConstant.TTOINF_STATUS_UNDEAL)
@@ -87,10 +88,8 @@ func CronTtoInfo() ecron.Ecron {
 		if err != nil {
 			invoker.Logger.Error("CronTtoInfo error: ", zap.Error(err))
 		}
-		endTime := uint64(time.Now().UnixNano())
-		// 纳秒=>毫秒
-		requestTimeFloat := float64(endTime-statTime) / 1e9
-		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", requestTimeFloat)
+		time.Sleep(5 * time.Second)
+		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", utils.MillisecondCost(startTime))
 		return nil
 	}
 
