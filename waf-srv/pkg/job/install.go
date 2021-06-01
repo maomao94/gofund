@@ -81,7 +81,7 @@ func CronTtoInfo() ecron.Ecron {
 		}
 		// 执行转发逻辑
 		for _, ttoinfo := range ttoinfos {
-			service.DealCronTtoInfo(ctx, ttoinfo)
+			go service.DealCronTtoInfo(ctx, ttoinfo)
 		}
 		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", utils.MillisecondCost(startTime))
 		return nil

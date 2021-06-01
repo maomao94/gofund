@@ -58,5 +58,5 @@ func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
 	invoker.Logger.Infof("hello tto: %v", ttoInfo)
-	api.Ok(c)
+	api.Fail(c)
 }
