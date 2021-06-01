@@ -84,11 +84,11 @@ func CronTtoInfo() ecron.Ecron {
 		//                    .andLessThanOrEqualTo(TtoInf.EXCUTE_TIME, new Date())
 
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
-		time.Sleep(10 * time.Second)
 		if err != nil {
 			invoker.Logger.Error("CronTtoInfo error: ", zap.Error(err))
 		}
 		endTime := uint64(time.Now().UnixNano())
+		// 纳秒=>毫秒
 		requestTimeFloat := float64(endTime-statTime) / 1e9
 		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", requestTimeFloat)
 		return nil
