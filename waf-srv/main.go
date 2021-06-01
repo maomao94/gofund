@@ -20,7 +20,8 @@ func main() {
 		).
 		Cron(
 			//job.CronJob1(),
-			job.CronJob2(),
+			//job.CronJob2(),
+			job.CronTtoInfo(),
 		).
 		Serve(
 			egovernor.Load("server.governor").Build(),

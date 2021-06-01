@@ -7,6 +7,8 @@ import (
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
 	"github.com/gotomicro/ego/task/ecron"
+	"go.uber.org/zap"
+	"time"
 	"waf-srv/model"
 	"waf-srv/pkg/invoker"
 
@@ -70,4 +72,39 @@ func CronJob2() ecron.Ecron {
 		ecron.WithLock(invoker.EcronLocker.NewLock("CronJob2")),
 		ecron.WithJob(job))
 	return cron
+}
+
+// 超时转发
+func CronTtoInfo() ecron.Ecron {
+	job := func(ctx context.Context) error {
+		statTime := uint64(time.Now().UnixNano())
+		var ttoinfos []model.TtoInfo
+		//   example.createCriteria()
+		//                    .andEqualTo(TtoInf.TTO_STATUS, ForwardParamConstant.TTOINF_STATUS_UNDEAL)
+		//                    .andLessThanOrEqualTo(TtoInf.EXCUTE_TIME, new Date())
+
+		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
+		time.Sleep(10 * time.Second)
+		if err != nil {
+			invoker.Logger.Error("CronTtoInfo error: ", zap.Error(err))
+		}
+		endTime := uint64(time.Now().UnixNano())
+		requestTimeFloat := float64(endTime-statTime) / 1e9
+		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", requestTimeFloat)
+		return nil
+	}
+
+	cron := ecron.Load("cron.waf").Build(
+		ecron.WithLock(invoker.EcronLocker.NewLock("CronTtoInfo")),
+		ecron.WithJob(job))
+	return cron
+}
+
+// header 打印表头信息
+func header() {
+	// 打印的时长都为毫秒 总请数
+	invoker.Logger.Info("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
+	invoker.Logger.Info(" 耗时│ 并发数│ 成功数│ 失败数│   qps  │最长耗时│最短耗时│平均耗时│下载字节│字节每秒│ 错误码")
+	invoker.Logger.Info("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
+	return
 }
