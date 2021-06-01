@@ -7,8 +7,9 @@ import (
 	"waf-srv/pkg/invoker"
 	"waf-srv/request"
 
+	"github.com/hehanpeng/gofund/common/global/api"
+
 	"github.com/gotomicro/ego/core/etrace"
-	"github.com/hehanpeng/gofund/common/global"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -39,7 +40,7 @@ func DeleteTtoInfo(ttoInfo model.TtoInfo) (err error) {
 //@param: ids req.IdsReq
 //@return: err error
 
-func DeleteTtoInfoByIds(ids global.IdsReq) (err error) {
+func DeleteTtoInfoByIds(ids api.IdsReq) (err error) {
 	err = invoker.Db.Delete(&[]model.TtoInfo{}, "id in ?", ids.Ids).Error
 	return err
 }
@@ -120,14 +121,14 @@ func DealCronTtoInfo(ctx context.Context, ttoInfo model.TtoInfo) error {
 	c1 := etrace.HeaderInjector(ctx, req.Header)
 	info, err := req.SetContext(c1).
 		SetBody(ttoInfo).
-		SetResult(&global.R{}).
+		SetResult(&api.R{}).
 		ExpectContentType("application/json").
 		Post(ttoInfo.CallMethod)
 	if err != nil {
 		invoker.Logger.Error("callSrvHttpComp post error")
 		return errors.New("callSrvHttpComp post error")
 	}
-	result := info.Result().(*global.R)
-	invoker.Logger.Infof("result info: %v,isSuccess: %v", info.Result().(*global.R), result.IsSuccess())
+	result := info.Result().(*api.R)
+	invoker.Logger.Infof("result info: %v,isSuccess: %v", info.Result().(*api.R), result.IsSuccess())
 	return nil
 }

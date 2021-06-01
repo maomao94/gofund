@@ -1,4 +1,4 @@
-package global
+package api
 
 // Paging common input parameter structure
 type PageInfo struct {

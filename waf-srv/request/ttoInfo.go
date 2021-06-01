@@ -3,10 +3,10 @@ package request
 import (
 	"waf-srv/model"
 
-	"github.com/hehanpeng/gofund/common/global"
+	"github.com/hehanpeng/gofund/common/global/api"
 )
 
 type TtoInfoSearch struct {
 	model.TtoInfo
-	global.PageInfo
+	api.PageInfo
 }

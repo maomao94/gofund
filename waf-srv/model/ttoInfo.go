@@ -2,13 +2,14 @@
 package model
 
 import (
-	"github.com/hehanpeng/gofund/common/global"
 	"time"
+
+	"github.com/hehanpeng/gofund/common/global/orm"
 )
 
 // 如果含有time.Time 请自行import time包
 type TtoInfo struct {
-	global.GVA_MODEL
+	orm.GVA_MODEL
 	Reference    int       `json:"reference" form:"reference" gorm:"column:reference;comment:引用;type:bigint;size:19;"`
 	RegisterTime time.Time `json:"registerTime" form:"registerTime" gorm:"column:register_time;comment:注册时间;type:datetime;"`
 	TtoType      string    `json:"ttoType" form:"ttoType" gorm:"column:tto_type;comment:类型（全局/局部）0:全局 1：局部;type:varchar(1);size:1;"`

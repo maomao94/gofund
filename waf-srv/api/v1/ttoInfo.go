@@ -6,7 +6,7 @@ import (
 	"waf-srv/request"
 	"waf-srv/service"
 
-	"github.com/hehanpeng/gofund/common/global"
+	"github.com/hehanpeng/gofund/common/global/api"
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -25,9 +25,9 @@ func CreateTtoInfo(c *gin.Context) {
 	_ = c.ShouldBindJSON(&ttoInfo)
 	if err := service.CreateTtoInfo(ttoInfo); err != nil {
 		invoker.Logger.Error("创建失败!", zap.Any("err", err))
-		global.FailWithMessage("创建失败", c)
+		api.FailWithMessage("创建失败", c)
 	} else {
-		global.OkWithMessage("创建成功", c)
+		api.OkWithMessage("创建成功", c)
 	}
 }
 
@@ -44,9 +44,9 @@ func DeleteTtoInfo(c *gin.Context) {
 	_ = c.ShouldBindJSON(&ttoInfo)
 	if err := service.DeleteTtoInfo(ttoInfo); err != nil {
 		invoker.Logger.Error("删除失败!", zap.Any("err", err))
-		global.FailWithMessage("删除失败", c)
+		api.FailWithMessage("删除失败", c)
 	} else {
-		global.OkWithMessage("删除成功", c)
+		api.OkWithMessage("删除成功", c)
 	}
 }
 
@@ -59,13 +59,13 @@ func DeleteTtoInfo(c *gin.Context) {
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"批量删除成功"}"
 // @Router /ttoInfo/deleteTtoInfoByIds [delete]
 func DeleteTtoInfoByIds(c *gin.Context) {
-	var IDS global.IdsReq
+	var IDS api.IdsReq
 	_ = c.ShouldBindJSON(&IDS)
 	if err := service.DeleteTtoInfoByIds(IDS); err != nil {
 		invoker.Logger.Error("批量删除失败!", zap.Any("err", err))
-		global.FailWithMessage("批量删除失败", c)
+		api.FailWithMessage("批量删除失败", c)
 	} else {
-		global.OkWithMessage("批量删除成功", c)
+		api.OkWithMessage("批量删除成功", c)
 	}
 }
 
@@ -82,9 +82,9 @@ func UpdateTtoInfo(c *gin.Context) {
 	_ = c.ShouldBindJSON(&ttoInfo)
 	if err := service.UpdateTtoInfo(ttoInfo); err != nil {
 		invoker.Logger.Error("更新失败!", zap.Any("err", err))
-		global.FailWithMessage("更新失败", c)
+		api.FailWithMessage("更新失败", c)
 	} else {
-		global.OkWithMessage("更新成功", c)
+		api.OkWithMessage("更新成功", c)
 	}
 }
 
@@ -101,9 +101,9 @@ func FindTtoInfo(c *gin.Context) {
 	_ = c.ShouldBindQuery(&ttoInfo)
 	if err, rettoInfo := service.GetTtoInfo(ttoInfo.ID); err != nil {
 		invoker.Logger.Error("查询失败!", zap.Any("err", err))
-		global.FailWithMessage("查询失败", c)
+		api.FailWithMessage("查询失败", c)
 	} else {
-		global.OkWithData(gin.H{"rettoInfo": rettoInfo}, c)
+		api.OkWithData(gin.H{"rettoInfo": rettoInfo}, c)
 	}
 }
 
@@ -120,9 +120,9 @@ func GetTtoInfoList(c *gin.Context) {
 	_ = c.ShouldBindQuery(&pageInfo)
 	if err, list, total := service.GetTtoInfoInfoList(pageInfo); err != nil {
 		invoker.Logger.Error("获取失败", zap.Any("err", err))
-		global.FailWithMessage("获取失败", c)
+		api.FailWithMessage("获取失败", c)
 	} else {
-		global.OkWithDetailed(global.PageResult{
+		api.OkWithDetailed(api.PageResult{
 			List:     list,
 			Total:    total,
 			Page:     pageInfo.Page,
