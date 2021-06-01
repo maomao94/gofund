@@ -55,6 +55,14 @@ func CronJob2() ecron.Ecron {
 		elog.Info("info job2", elog.FieldTid(etrace.ExtractTraceID(ctx)))
 		elog.Warn("warn job2", elog.FieldTid(etrace.ExtractTraceID(ctx)))
 		fmt.Println("run job2", elog.FieldTid(etrace.ExtractTraceID(ctx)))
+		req := invoker.CallSrvHttpComp["wafs"].R()
+		// Inject traceId Into Header
+		c1 := etrace.HeaderInjector(ctx, req.Header)
+		info, err := req.SetContext(c1).Get("/api/hello")
+		if err != nil {
+			return err
+		}
+		elog.Info(info.String())
 		return nil
 	}
 

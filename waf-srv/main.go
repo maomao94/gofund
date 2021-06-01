@@ -19,8 +19,8 @@ func main() {
 			job.InstallComponent(),
 		).
 		Cron(
-		//job.CronJob1(),
-		//job.CronJob2(),
+			//job.CronJob1(),
+			job.CronJob2(),
 		).
 		Serve(
 			egovernor.Load("server.governor").Build(),

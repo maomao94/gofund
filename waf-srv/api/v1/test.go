@@ -47,6 +47,6 @@ func Hello(c *gin.Context) {
 		return
 	}
 	invoker.Logger.Info("I have a Lock!")
-	time.Sleep(5 * time.Second)
+	//time.Sleep(5 * time.Second)
 	resp.Ok(c)
 }
