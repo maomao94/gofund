@@ -1,5 +1,7 @@
 [logger.default]
 level = "debug"
+[trace.jaeger] # 启用链路的核心配置
+ServiceName = "server"
 [server.http]
 port = 9111
 [http.ups]

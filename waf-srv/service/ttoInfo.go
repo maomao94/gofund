@@ -92,7 +92,7 @@ func GetTtoInfoInfoList(info request.TtoInfoSearch) (err error, list interface{}
 }
 
 // 执行超时转发逻辑
-func Dispose(ctx context.Context, ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.WaitGroup) error {
+func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.WaitGroup) error {
 	// todo 分布式锁
 	startTime := time.Now()
 	result := new(api.R)
@@ -121,6 +121,8 @@ func Dispose(ctx context.Context, ttoInfo model.TtoInfo, ch chan<- *model.Reques
 		invoker.Logger.Error("callSrvHttpComp is not register", zap.String("key", ttoInfo.CallSrvName))
 		return errors.New("callSrvHttpComp is not register")
 	}
+	span, ctx := etrace.StartSpanFromContext(context.Background(), "callHTTP()")
+	defer span.Finish()
 	req := callSrvHttpComp.R()
 	// Inject traceId Into Header
 	c1 := etrace.HeaderInjector(ctx, req.Header)

@@ -57,5 +57,5 @@ func HelloLock(c *gin.Context) {
 func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
-	api.Ok(c)
+	api.Fail(c)
 }
