@@ -3,9 +3,13 @@ package service
 import (
 	"context"
 	"errors"
+	"sync"
+	"time"
 	"waf-srv/model"
 	"waf-srv/pkg/invoker"
 	"waf-srv/request"
+
+	"github.com/hehanpeng/gofund/common/helper"
 
 	"go.uber.org/zap"
 
@@ -88,8 +92,9 @@ func GetTtoInfoInfoList(info request.TtoInfoSearch) (err error, list interface{}
 }
 
 // 执行超时转发逻辑
-func DealCronTtoInfo(ctx context.Context, ttoInfo model.TtoInfo) error {
+func Dispose(ctx context.Context, ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.WaitGroup) error {
 	// todo 分布式锁
+	startTime := time.Now()
 	result := new(api.R)
 	// defer
 	defer func() {
@@ -101,6 +106,15 @@ func DealCronTtoInfo(ctx context.Context, ttoInfo model.TtoInfo) error {
 				invoker.Logger.Error("update tto error", zap.Error(err))
 			}
 		}
+		requestTime := uint64(helper.DiffNano(startTime))
+		requestResults := &model.RequestResults{
+			Time:      requestTime,
+			IsSucceed: result.IsSuccess(),
+			ErrCode:   result.Code,
+		}
+		requestResults.SetID(uint64(ttoInfo.ID), uint64(ttoInfo.Reference))
+		ch <- requestResults
+		wg.Done()
 	}()
 	// http 调用
 	callSrvHttpComp := invoker.CallSrvHttpComps[ttoInfo.CallSrvName]

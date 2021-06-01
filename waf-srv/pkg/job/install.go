@@ -4,15 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
 	"time"
 	"waf-srv/model"
 	"waf-srv/pkg/invoker"
 	"waf-srv/service"
+	"waf-srv/statistics"
 
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
 	"github.com/gotomicro/ego/task/ecron"
-	utils "github.com/hehanpeng/gofund/common/util"
 	"go.uber.org/zap"
 
 	"github.com/gotomicro/ego/task/ejob"
@@ -72,7 +73,14 @@ func CronJob2() ecron.Ecron {
 // 超时转发
 func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
-		startTime := uint64(time.Now().UnixNano())
+		// 设置接收数据缓存
+		ch := make(chan *model.RequestResults)
+		var (
+			wg          sync.WaitGroup // 发送数据完成
+			wgReceiving sync.WaitGroup // 数据处理完成
+		)
+		wgReceiving.Add(1)
+		go statistics.ReceivingResults(ch, &wgReceiving)
 		var ttoinfos []model.TtoInfo
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
 		if err != nil {
@@ -81,9 +89,16 @@ func CronTtoInfo() ecron.Ecron {
 		}
 		// 执行转发逻辑
 		for _, ttoinfo := range ttoinfos {
-			go service.DealCronTtoInfo(ctx, ttoinfo)
+			wg.Add(1)
+			go service.Dispose(ctx, ttoinfo, ch, &wg)
 		}
-		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", utils.MillisecondCost(startTime))
+		// 等待所有的数据都发送完成
+		wg.Wait()
+		// 延时1毫秒 确保数据都处理完成了
+		time.Sleep(1 * time.Millisecond)
+		close(ch)
+		// 数据全部处理完成了
+		wgReceiving.Wait()
 		return nil
 	}
 
@@ -91,13 +106,4 @@ func CronTtoInfo() ecron.Ecron {
 		ecron.WithLock(invoker.EcronLocker.NewLock("CronTtoInfo")),
 		ecron.WithJob(job))
 	return cron
-}
-
-// header 打印表头信息
-func header() {
-	// 打印的时长都为毫秒 总请数
-	invoker.Logger.Info("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
-	invoker.Logger.Info(" 耗时│ 并发数│ 成功数│ 失败数│   qps  │最长耗时│最短耗时│平均耗时│下载字节│字节每秒│ 错误码")
-	invoker.Logger.Info("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
-	return
 }

@@ -11,6 +11,7 @@ require (
 	github.com/hehanpeng/gofund/proto v0.0.0-00010101000000-000000000000
 	go.uber.org/zap v1.17.0
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
+	golang.org/x/text v0.3.6
 	google.golang.org/grpc v1.29.1
 )
 
