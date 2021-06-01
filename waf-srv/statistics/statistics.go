@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 	"waf-srv/model"
+	"waf-srv/pkg/invoker"
 
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
@@ -59,7 +60,6 @@ func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 	}()
 	header()
 	for data := range ch {
-		// fmt.Println("处理一条数据", data.ID, data.Time, data.IsSucceed, data.ErrCode)
 		processingTime = processingTime + data.Time
 		if maxTime <= data.Time {
 			maxTime = data.Time
@@ -91,13 +91,13 @@ func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 	endTime := uint64(time.Now().UnixNano())
 	requestTime = endTime - statTime
 	calculateData(processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIDLen, errCode)
-	fmt.Printf("\n\n")
-	fmt.Println("*************************  结果 stat  ****************************")
-	fmt.Println("请求总数:", successNum+failureNum, "总请求时间:",
+	invoker.Logger.Info("\n\n")
+	invoker.Logger.Info("*************************  结果 stat  ****************************")
+	invoker.Logger.Infof("请求总数:", successNum+failureNum, "总请求时间:",
 		fmt.Sprintf("%.3f", float64(requestTime)/1e9),
 		"秒", "successNum:", successNum, "failureNum:", failureNum)
-	fmt.Println("*************************  结果 end   ****************************")
-	fmt.Printf("\n\n")
+	invoker.Logger.Info("*************************  结果 end   ****************************")
+	invoker.Logger.Info("\n\n")
 }
 
 // calculateData 计算数据
@@ -121,11 +121,11 @@ func calculateData(processingTime, requestTime, maxTime, minTime, successNum, fa
 
 // header 打印表头信息
 func header() {
-	fmt.Printf("\n\n")
+	invoker.Logger.Info("\n\n")
 	// 打印的时长都为毫秒 总请数
-	fmt.Println("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
-	fmt.Println(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│ 错误码")
-	fmt.Println("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
+	invoker.Logger.Info("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
+	invoker.Logger.Info(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│ 错误码")
+	invoker.Logger.Info("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
 	return
 }
 
@@ -134,7 +134,7 @@ func table(successNum, failureNum uint64, errCode map[int]int, maxTimeFloat, min
 	// 打印的时长都为毫秒
 	result := fmt.Sprintf("%4.0fs│%7d│%7d│%7d│%8.2f│%8.2f│%v",
 		requestTimeFloat, chanIDLen, successNum, failureNum, maxTimeFloat, minTimeFloat, printMap(errCode))
-	fmt.Println(result)
+	invoker.Logger.Info(result)
 	return
 }
 
