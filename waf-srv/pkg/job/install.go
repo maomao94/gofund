@@ -86,8 +86,8 @@ func CronTtoInfo() ecron.Ecron {
 			return err
 		}
 		// 执行转发逻辑
-		for ttoinfo := range ttoinfos {
-			invoker.Logger.Infow("CronTtoInfo info: ", ttoinfo)
+		for _, ttoinfo := range ttoinfos {
+			invoker.Logger.Infof("CronTtoInfo info: %+v", ttoinfo)
 		}
 		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", utils.MillisecondCost(startTime))
 		return nil
