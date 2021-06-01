@@ -6,11 +6,12 @@ import (
 	"waf-srv/model"
 	"waf-srv/pkg/invoker"
 
+	"github.com/hehanpeng/gofund/common/global"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gotomicro/ego-component/eredis"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/core/etrace"
-	"github.com/hehanpeng/gofund/common/resp"
 )
 
 func TestUps(c *gin.Context) {
@@ -23,10 +24,10 @@ func TestUps(c *gin.Context) {
 
 	info, err := req.SetContext(c1).Get("/api/hello")
 	if err != nil {
-		resp.Fail(c)
+		global.Fail(c)
 		return
 	}
-	resp.OkWithData(info.String(), c)
+	global.OkWithData(info.String(), c)
 }
 
 func HelloLock(c *gin.Context) {
@@ -41,21 +42,21 @@ func HelloLock(c *gin.Context) {
 	}()
 	if err == eredis.ErrNotObtained {
 		invoker.Logger.Error("Could not obtain Lock!", elog.FieldErr(err))
-		resp.FailWithMessage("Could not obtain Lock!", c)
+		global.FailWithMessage("Could not obtain Lock!", c)
 		return
 	} else if err != nil {
 		invoker.Logger.Error("error", elog.FieldErr(err))
-		resp.FailWithMessage("error", c)
+		global.FailWithMessage("error", c)
 		return
 	}
 	invoker.Logger.Info("I have a Lock!")
 	//time.Sleep(5 * time.Second)
-	resp.Ok(c)
+	global.Ok(c)
 }
 
 func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
 	invoker.Logger.Infof("hello tto: %v", ttoInfo)
-	resp.Ok(c)
+	global.Ok(c)
 }

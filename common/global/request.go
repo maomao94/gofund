@@ -1,4 +1,4 @@
-package req
+package global
 
 // Paging common input parameter structure
 type PageInfo struct {
@@ -13,11 +13,6 @@ type GetById struct {
 
 type IdsReq struct {
 	Ids []int `json:"ids" form:"ids"`
-}
-
-// Get role by id structure
-type GetAuthorityId struct {
-	AuthorityId string // 角色ID
 }
 
 type Empty struct{}

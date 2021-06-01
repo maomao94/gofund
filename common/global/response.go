@@ -1,4 +1,4 @@
-package resp
+package global
 
 import (
 	"net/http"
@@ -6,10 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Resp struct {
+type R struct {
 	Code int         `json:"code"`
 	Data interface{} `json:"data"`
 	Msg  string      `json:"msg"`
+}
+
+func (r *R) IsSuccess() bool {
+	if r.Code == 0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 const (
@@ -19,7 +27,7 @@ const (
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
 	// 开始时间
-	c.JSON(http.StatusOK, Resp{
+	c.JSON(http.StatusOK, R{
 		code,
 		data,
 		msg,
@@ -52,4 +60,11 @@ func FailWithMessage(message string, c *gin.Context) {
 
 func FailWithDetailed(data interface{}, message string, c *gin.Context) {
 	Result(ERROR, data, message, c)
+}
+
+type PageResult struct {
+	List     interface{} `json:"list"`
+	Total    int64       `json:"total"`
+	Page     int         `json:"page"`
+	PageSize int         `json:"pageSize"`
 }
