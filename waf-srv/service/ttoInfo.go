@@ -98,7 +98,7 @@ func Dispose(ctx context.Context, ttoInfo model.TtoInfo, ch chan<- *model.Reques
 	result := new(api.R)
 	// defer
 	defer func() {
-		invoker.Logger.Infof("result info: %v, isSuccess: %v", result, result.IsSuccess())
+		invoker.Logger.Debugf("result info: %v, isSuccess: %v", result, result.IsSuccess())
 		if result.IsSuccess() {
 			// 更新成已执行
 			err := invoker.Db.Model(&ttoInfo).Update("tto_status", "1").Error
