@@ -10,18 +10,18 @@ addr = "http://127.0.0.1:9211" # 开启后并加上export EGO_DEBUG=true，可�
 addr = "http://127.0.0.1:9111" # 开启后并加上export EGO_DEBUG=true，可以看到每次http请求，配置名、地址、耗时、请求数据、响应数据
 debug = true
 [cron.waf]
-enableDistributedTask = false			# 是否分布式任务，默认否，如果存在分布式任务，会只执行该定时任务
+enableDistributedTask = true			# 是否分布式任务，默认否，如果存在分布式任务，会只执行该定时任务
 enableImmediatelyRun = false			# 是否立刻执行，默认否
 enableSeconds = true				# 是否使用秒作解析器，默认否
-spec = "*/5 * * * * *"					# 执行时间
+spec = "*/1 * * * * *"					# 执行时间
 delayExecType = "skip"					# skip，queue，concurrent，如果上一个任务执行较慢，到达了新任务执行时间，那么新任务选择跳过，排队，并发执行的策略，新任务默认选择skip策略
 [redis.waf]
 debug = true
 addr = "127.0.0.1:6379"
 #[server.grpc]
 #port = 9112
-enableAccessInterceptorReq = true
-enableAccessInterceptorRes = true
+#enableAccessInterceptorReq = true
+#enableAccessInterceptorRes = true
 [server.governor]
 port = 9113
 #[etcd]

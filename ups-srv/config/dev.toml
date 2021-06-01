@@ -1,3 +1,7 @@
+[logger.default]
+level = "info"
+[trace.jaeger] # 启用链路的核心配置
+ServiceName = "waf-srv"
 [server.http]
 port = 9211
 [redis.waf]
@@ -5,8 +9,8 @@ debug = true
 addr = "127.0.0.1:6379"
 #[server.grpc]
 #port = 9212
-enableAccessInterceptorReq = true
-enableAccessInterceptorRes = true
+#enableAccessInterceptorReq = true
+#enableAccessInterceptorRes = true
 [server.governor]
 port = 9213
 #[etcd]
