@@ -96,7 +96,6 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 	// todo 分布式锁
 	startTime := time.Now()
 	result := new(api.R)
-	// defer
 	defer func() {
 		if result.IsSuccess() {
 			// 更新成已执行
@@ -121,9 +120,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 		invoker.Logger.Error("callSrvHttpComp is not register", zap.String("key", ttoInfo.CallSrvName))
 		return errors.New("callSrvHttpComp is not register")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	span, ctx := etrace.StartSpanFromContext(ctx, "callHTTP()")
+	span, ctx := etrace.StartSpanFromContext(context.Background(), "callHTTP()")
 	defer span.Finish()
 	req := callSrvHttpComp.R()
 	// Inject traceId Into Header
