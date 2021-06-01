@@ -115,7 +115,7 @@ func DealCronTtoInfo(ctx context.Context, ttoInfo model.TtoInfo) error {
 	// http 调用
 	callSrvHttpComp := invoker.CallSrvHttpComps[ttoInfo.CallSrvName]
 	if callSrvHttpComp == nil {
-		invoker.Logger.Errorf("callSrvHttpComps[v%] is not register", ttoInfo.CallSrvName)
+		invoker.Logger.Errorf("callSrvHttpComps[%v] is not register", ttoInfo.CallSrvName)
 		return errors.New("callSrvHttpComp is nil")
 	}
 	req := callSrvHttpComp.R()

@@ -56,6 +56,6 @@ func HelloLock(c *gin.Context) {
 func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
-	invoker.Logger.Infof("hello tto: +v%", ttoInfo)
+	invoker.Logger.Infof("hello tto: %v", ttoInfo)
 	resp.Ok(c)
 }
