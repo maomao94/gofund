@@ -74,13 +74,13 @@ func CronJob2() ecron.Ecron {
 func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
 		// 设置接收数据缓存
-		ch := make(chan *model.RequestResults, 10000)
+		ch := make(chan *model.RequestResults, 1000)
 		var (
 			wg          sync.WaitGroup // 发送数据完成
 			wgReceiving sync.WaitGroup // 数据处理完成
 		)
 		wgReceiving.Add(1)
-		go statistics.ReceivingResults(ch, &wgReceiving)
+		go statistics.ReceivingResults(1, ch, &wgReceiving)
 		var ttoinfos []model.TtoInfo
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
 		if err != nil {

@@ -23,7 +23,7 @@ var (
 // ReceivingResults 接收结果并处理
 // 统计的时间都是纳秒，显示的时间 都是毫秒
 // concurrent 并发数
-func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
+func ReceivingResults(concurrent uint64, ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 	defer func() {
 		wg.Done()
 	}()
@@ -50,7 +50,7 @@ func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 			case <-ticker.C:
 				endTime := uint64(time.Now().UnixNano())
 				requestTime = endTime - statTime
-				go calculateData(processingTime, requestTime, maxTime, minTime, successNum, failureNum,
+				go calculateData(concurrent, processingTime, requestTime, maxTime, minTime, successNum, failureNum,
 					chanIDLen, errCode)
 			case <-stopChan:
 				// 处理完成
@@ -90,45 +90,58 @@ func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 	stopChan <- true
 	endTime := uint64(time.Now().UnixNano())
 	requestTime = endTime - statTime
-	calculateData(processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIDLen, errCode)
+	calculateData(concurrent, processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIDLen, errCode)
 	invoker.Logger.Debug("*************************  结果 stat  ****************************")
 	invoker.Logger.Debugf("请求总数: %d 总请求时间: %.3f秒 successNum: %d, failureNum: %d", successNum+failureNum, float64(requestTime)/1e9, successNum, failureNum)
 	invoker.Logger.Debug("*************************  结果 end   ****************************")
 }
 
 // calculateData 计算数据
-func calculateData(processingTime, requestTime, maxTime, minTime, successNum, failureNum uint64,
+func calculateData(concurrent, processingTime, requestTime, maxTime, minTime, successNum, failureNum uint64,
 	chanIDLen int, errCode map[int]int) {
 	if processingTime == 0 {
 		processingTime = 1
 	}
 	var (
+		qps              float64
+		averageTime      float64
 		maxTimeFloat     float64
 		minTimeFloat     float64
 		requestTimeFloat float64
 	)
+	// 平均 每个协程成功数*总协程数据/总耗时 (每秒)
+	if processingTime != 0 {
+		qps = float64(successNum*1e9*concurrent) / float64(processingTime)
+	}
+	// 平均时长 总耗时/总请求数/并发数 纳秒=>毫秒
+	if successNum != 0 && concurrent != 0 {
+		averageTime = float64(processingTime) / float64(successNum*1e6)
+	}
 	// 纳秒=>毫秒
 	maxTimeFloat = float64(maxTime) / 1e6
 	minTimeFloat = float64(minTime) / 1e6
 	requestTimeFloat = float64(requestTime) / 1e9
 	// 打印的时长都为毫秒
-	table(successNum, failureNum, errCode, maxTimeFloat, minTimeFloat, requestTimeFloat, chanIDLen)
+	// 打印的时长都为毫秒
+	table(successNum, failureNum, errCode, qps, averageTime, maxTimeFloat, minTimeFloat, requestTimeFloat, chanIDLen)
 }
 
 // header 打印表头信息
 func header() {
 	// 打印的时长都为毫秒 总请数
 	invoker.Logger.Debug("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
-	invoker.Logger.Debug(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│ 错误码")
+	invoker.Logger.Debug(" 耗时│ 并发数│ 成功数│ 失败数│   qps  │最长耗时│最短耗时│平均耗时│ 错误码")
 	invoker.Logger.Debug("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
 	return
 }
 
 // table 打印表格
-func table(successNum, failureNum uint64, errCode map[int]int, maxTimeFloat, minTimeFloat, requestTimeFloat float64, chanIDLen int) {
+func table(successNum, failureNum uint64, errCode map[int]int,
+	qps, averageTime, maxTimeFloat, minTimeFloat, requestTimeFloat float64, chanIDLen int) {
 	// 打印的时长都为毫秒
-	result := fmt.Sprintf("%4.0fs│%7d│%7d│%7d│%8.2f│%8.2f│%v",
-		requestTimeFloat, chanIDLen, successNum, failureNum, maxTimeFloat, minTimeFloat, printMap(errCode))
+	result := fmt.Sprintf("%4.0fs│%7d│%7d│%7d│%8.2f│%8.2f│%8.2f│%8.2f│%v",
+		requestTimeFloat, chanIDLen, successNum, failureNum, qps, maxTimeFloat, minTimeFloat, averageTime,
+		printMap(errCode))
 	invoker.Logger.Debug(result)
 	return
 }
