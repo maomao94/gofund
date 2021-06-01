@@ -13,7 +13,7 @@ type R struct {
 }
 
 func (r *R) IsSuccess() bool {
-	if r.Code == 0 {
+	if r.Code == SUCCESS {
 		return true
 	} else {
 		return false

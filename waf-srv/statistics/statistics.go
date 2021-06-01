@@ -93,8 +93,7 @@ func ReceivingResults(ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
 	calculateData(processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIDLen, errCode)
 	fmt.Printf("\n\n")
 	fmt.Println("*************************  结果 stat  ****************************")
-	// fmt.Println("处理协程数量:", concurrent, "程序处理总时长:", fmt.Sprintf("%.3f", float64(processingTime/concurrent)/1e9), "秒")
-	fmt.Println("请求总数（并发数*请求数 -c * -n）:", successNum+failureNum, "总请求时间:",
+	fmt.Println("请求总数:", successNum+failureNum, "总请求时间:",
 		fmt.Sprintf("%.3f", float64(requestTime)/1e9),
 		"秒", "successNum:", successNum, "failureNum:", failureNum)
 	fmt.Println("*************************  结果 end   ****************************")
@@ -125,7 +124,7 @@ func header() {
 	fmt.Printf("\n\n")
 	// 打印的时长都为毫秒 总请数
 	fmt.Println("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────┬────────┬────────")
-	fmt.Println(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│平均耗时│ 错误码")
+	fmt.Println(" 耗时│ 并发数│ 成功数│ 失败数│最长耗时│最短耗时│ 错误码")
 	fmt.Println("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────┼────────┼────────")
 	return
 }
