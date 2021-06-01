@@ -1,6 +1,7 @@
 package invoker
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
@@ -24,6 +25,7 @@ var (
 	//UpsSrvGrpc   upssrv.UpsClient
 	//EtcdClient   *eetcd.Component
 	//EtcdRegistry *registry.Component
+	CallSrvHttpComp = make(map[string]*ehttp.Component)
 )
 
 func Init() error {
@@ -33,6 +35,7 @@ func Init() error {
 	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
 	EcronLocker = ecronlock.DefaultContainer().Build(ecronlock.WithClient(RedisStub))
 	UpsHttpComp = ehttp.Load("http.ups").Build()
+	RegisterCallSrvHttpComp("wafs", UpsHttpComp)
 	//EtcdClient = eetcd.Load("etcd").Build()
 	//EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
 
@@ -51,4 +54,14 @@ func Error(code errcodepb.ErrCode, err error) error {
 		cause = err.Error()
 	}
 	return status.Error(codes.Code(code), fmt.Sprintf("error name: %s, cause: %s", errcodepb.ErrCode_name[int32(code)], cause))
+}
+
+func RegisterCallSrvHttpComp(key string, comp *ehttp.Component) (err error) {
+	if CallSrvHttpComp[key] != nil {
+		Logger.Errorf("%v 已注册comp,无法重复注册", key)
+		return errors.New(key + "已注册,无法重复注册")
+	} else {
+		CallSrvHttpComp[key] = comp
+		return nil
+	}
 }
