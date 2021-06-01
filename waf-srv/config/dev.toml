@@ -22,6 +22,8 @@ addr = "127.0.0.1:6379"
 #port = 9112
 #enableAccessInterceptorReq = true
 #enableAccessInterceptorRes = true
+#[grpc.upssrv]
+#addr = "etcd:///ups-srv"
 [server.governor]
 port = 9113
 #[etcd]
@@ -36,5 +38,3 @@ dsn = "root:123456@tcp(127.0.0.1:3306)/waf?charset=utf8mb4&collation=utf8mb4_gen
 level = "panic"
 maxIdleConns = 50
 maxOpenConns = 100
-[grpc.upssrv]
-addr = "etcd:///ups-srv"
