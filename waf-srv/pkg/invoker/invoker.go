@@ -52,7 +52,7 @@ func Init() error {
 
 // 记录grpc error信息
 func Error(code errcodepb.ErrCode, err error) error {
-	Logger.Error("grpc error: ", zap.Int32("code", int32(code)), zap.Error(err))
+	Logger.Error("grpc error", zap.Int32("code", int32(code)), zap.Error(err))
 	var cause string
 	if err != nil {
 		cause = err.Error()

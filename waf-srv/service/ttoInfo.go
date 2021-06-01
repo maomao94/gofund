@@ -7,6 +7,8 @@ import (
 	"waf-srv/pkg/invoker"
 	"waf-srv/request"
 
+	"go.uber.org/zap"
+
 	"github.com/hehanpeng/gofund/common/global/api"
 
 	"github.com/gotomicro/ego/core/etrace"
@@ -110,11 +112,22 @@ func DealCronTtoInfo(ctx context.Context, ttoInfo model.TtoInfo) error {
 	//} catch (Throwable e) {
 	//	log.error("tto rpc error {}调用失败", input.getCallClass());
 	//}
+	result := new(api.R)
+	// defer
+	defer func() {
+		if result.IsSuccess() {
+			// 更新成已执行
+			err := invoker.Db.Model(&ttoInfo).Update("tto_status", "1").Error
+			if err != nil {
+				invoker.Logger.Error("update tto error", zap.Error(err))
+			}
+		}
+	}()
 	// http 调用
 	callSrvHttpComp := invoker.CallSrvHttpComps[ttoInfo.CallSrvName]
 	if callSrvHttpComp == nil {
-		invoker.Logger.Errorf("callSrvHttpComps[%v] is not register", ttoInfo.CallSrvName)
-		return errors.New("callSrvHttpComp is nil")
+		invoker.Logger.Error("callSrvHttpComp is not register", zap.String("key", ttoInfo.CallSrvName))
+		return errors.New("callSrvHttpComp is not register")
 	}
 	req := callSrvHttpComp.R()
 	// Inject traceId Into Header
@@ -125,10 +138,10 @@ func DealCronTtoInfo(ctx context.Context, ttoInfo model.TtoInfo) error {
 		ExpectContentType("application/json").
 		Post(ttoInfo.CallMethod)
 	if err != nil {
-		invoker.Logger.Error("callSrvHttpComp post error")
+		invoker.Logger.Error("callSrvHttpComp post error", zap.Error(err))
 		return errors.New("callSrvHttpComp post error")
 	}
-	result := info.Result().(*api.R)
-	invoker.Logger.Infof("result info: %v,isSuccess: %v", info.Result().(*api.R), result.IsSuccess())
+	result = info.Result().(*api.R)
+	invoker.Logger.Infof("result info: %v,isSuccess: %v", result, result.IsSuccess())
 	return nil
 }

@@ -76,7 +76,7 @@ func CronTtoInfo() ecron.Ecron {
 		var ttoinfos []model.TtoInfo
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
 		if err != nil {
-			invoker.Logger.Error("CronTtoInfo error: ", zap.Error(err))
+			invoker.Logger.Error("cronTtoInfo error", zap.Error(err))
 			return err
 		}
 		// 执行转发逻辑
