@@ -43,7 +43,9 @@ func CronJob1() ecron.Ecron {
 		return errors.New("exec job1 error")
 	}
 
-	cron := ecron.Load("cron.waf").Build(ecron.WithJob(job))
+	cron := ecron.Load("cron.waf").Build(
+		ecron.WithLock(invoker.EcronLocker.NewLock("CronJob1")),
+		ecron.WithJob(job))
 	return cron
 }
 
@@ -56,6 +58,8 @@ func CronJob2() ecron.Ecron {
 		return nil
 	}
 
-	cron := ecron.Load("cron.waf").Build(ecron.WithJob(job))
+	cron := ecron.Load("cron.waf").Build(
+		ecron.WithLock(invoker.EcronLocker.NewLock("CronJob2")),
+		ecron.WithJob(job))
 	return cron
 }

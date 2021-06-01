@@ -2,13 +2,12 @@ package invoker
 
 import (
 	"fmt"
-	"github.com/gotomicro/ego/client/ehttp"
-
-	"github.com/gotomicro/ego/server/egin"
-
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
+	"github.com/gotomicro/ego-component/eredis/ecronlock"
+	"github.com/gotomicro/ego/client/ehttp"
 	"github.com/gotomicro/ego/core/elog"
+	"github.com/gotomicro/ego/server/egin"
 	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
@@ -21,6 +20,7 @@ var (
 	Db          *egorm.Component
 	RedisStub   *eredis.Component
 	UpsHttpComp *ehttp.Component
+	EcronLocker *ecronlock.Component
 	//UpsSrvGrpc   upssrv.UpsClient
 	//EtcdClient   *eetcd.Component
 	//EtcdRegistry *registry.Component
@@ -31,6 +31,7 @@ func Init() error {
 	Gin = egin.Load("server.http").Build()
 	Db = egorm.Load("mysql.waf").Build()
 	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
+	EcronLocker = ecronlock.DefaultContainer().Build(ecronlock.WithClient(RedisStub))
 	UpsHttpComp = ehttp.Load("http.ups").Build()
 	//EtcdClient = eetcd.Load("etcd").Build()
 	//EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
