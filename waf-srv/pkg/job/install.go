@@ -80,15 +80,15 @@ func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
 		startTime := uint64(time.Now().UnixNano())
 		var ttoinfos []model.TtoInfo
-		//   example.createCriteria()
-		//                    .andEqualTo(TtoInf.TTO_STATUS, ForwardParamConstant.TTOINF_STATUS_UNDEAL)
-		//                    .andLessThanOrEqualTo(TtoInf.EXCUTE_TIME, new Date())
-
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
 		if err != nil {
 			invoker.Logger.Error("CronTtoInfo error: ", zap.Error(err))
+			return err
 		}
-		time.Sleep(5 * time.Second)
+		// 执行转发逻辑
+		for ttoinfo := range ttoinfos {
+			invoker.Logger.Infow("CronTtoInfo info: ", ttoinfo)
+		}
 		invoker.Logger.Infof("CronTtoInfo 耗时: %4.0fs", utils.MillisecondCost(startTime))
 		return nil
 	}
