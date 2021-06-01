@@ -21,8 +21,8 @@ func (r *R) IsSuccess() bool {
 }
 
 const (
-	ERROR   = 999999
-	SUCCESS = 000000
+	ERROR   = 500
+	SUCCESS = 200
 )
 
 func Result(code int, data interface{}, msg string, c *gin.Context) {
