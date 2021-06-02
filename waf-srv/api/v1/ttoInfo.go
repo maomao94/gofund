@@ -131,6 +131,11 @@ func GetTtoInfoList(c *gin.Context) {
 	}
 }
 
+// {
+//    "CallSrvName": "waf-srv",
+//    "callMethod": "api/hello",
+//    "expiredTime": 5000
+//}
 func RegisterTto(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
@@ -142,6 +147,9 @@ func RegisterTto(c *gin.Context) {
 	}
 }
 
+//{
+//    "ID": 1
+//}
 func CancelTto(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
