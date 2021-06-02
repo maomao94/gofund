@@ -19,9 +19,9 @@ func main() {
 			job.InstallComponent(),
 		).
 		Cron(
-		//job.CronJob1(),
-		//job.CronJob2(),
-		//job.CronTtoInfo(),
+			//job.CronJob1(),
+			//job.CronJob2(),
+			job.CronTtoInfo(),
 		).
 		Serve(
 			egovernor.Load("server.governor").Build(),
