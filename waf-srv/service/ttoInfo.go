@@ -146,6 +146,11 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 	return nil
 }
 
+func RegisterTto(ttoInfo model.TtoInfo) (err error) {
+	err = invoker.Db.Create(&ttoInfo).Error
+	return err
+}
+
 func CancelTto(id uint) (err error) {
 	update := invoker.Db.Model(&model.TtoInfo{}).Where("id = ?", id).Update("tto_status", "1")
 	if update.Error != nil {
