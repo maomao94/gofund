@@ -147,6 +147,8 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 }
 
 func RegisterTto(ttoInfo model.TtoInfo) (err error) {
+	ttoInfo.ExecuteTime = ttoInfo.RegisterTime.Add(time.Duration(ttoInfo.ExpiredTime) * time.Microsecond)
+	ttoInfo.TtoStatus = "0"
 	err = invoker.Db.Create(&ttoInfo).Error
 	return err
 }
