@@ -4,12 +4,14 @@ level = "info"
 ServiceName = "ups-srv"
 [server.http]
 port = 9211
-[redis.waf]
+[http.waf]
+addr = "http://127.0.0.1:9111" # 开启后并加上export EGO_DEBUG=true，可以看到每次http请求，配置名、地址、耗时、请求数据、响应数据
+[redis.ups]
 debug = true
 addr = "127.0.0.1:6379"
 [server.governor]
 port = 9213
-[mysql.waf]
+[mysql.ups]
 connMaxLifetime = "300s"
 debug = true
 dsn = "root:123456@tcp(127.0.0.1:3306)/ups?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local"

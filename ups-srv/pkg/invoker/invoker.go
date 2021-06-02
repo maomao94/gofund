@@ -3,6 +3,8 @@ package invoker
 import (
 	"fmt"
 
+	"github.com/gotomicro/ego/client/ehttp"
+
 	"github.com/gotomicro/ego/server/egin"
 
 	"github.com/gotomicro/ego-component/egorm"
@@ -15,10 +17,11 @@ import (
 )
 
 var (
-	Logger    *elog.Component
-	Gin       *egin.Component
-	Db        *egorm.Component
-	RedisStub *eredis.Component
+	Logger      *elog.Component
+	Gin         *egin.Component
+	Db          *egorm.Component
+	RedisStub   *eredis.Component
+	WafHttpComp *ehttp.Component
 	//EtcdClient   *eetcd.Component
 	//EtcdRegistry *registry.Component
 )
@@ -26,8 +29,9 @@ var (
 func Init() error {
 	Logger = elog.DefaultLogger
 	Gin = egin.Load("server.http").Build()
-	Db = egorm.Load("mysql.waf").Build()
-	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
+	Db = egorm.Load("mysql.ups").Build()
+	RedisStub = eredis.Load("redis.ups").Build(eredis.WithStub())
+	WafHttpComp = ehttp.Load("http.waf").Build()
 	//EtcdClient = eetcd.Load("etcd").Build()
 	//EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
 
