@@ -13,10 +13,15 @@ func GetRouter() *egin.Component {
 	// 方便统一添加路由组前缀 多服务器上线使用
 	PublicGroup := Router.Group("api")
 	{
-		InitTtoInfoRouter(PublicGroup)
 		PublicGroup.GET("testUps", v1.TestUps)
 		PublicGroup.GET("helloLock", v1.HelloLock)
 		PublicGroup.POST("hello", v1.Hello)
+
+		// 超时转发相关
+		PublicGroup.POST("registerTto", v1.RegisterTto) // 注册tto
+		PublicGroup.PUT("cancelTto", v1.CancelTto)      // 注销tto
+
+		InitTtoInfoRouter(PublicGroup)
 	}
 	return Router
 }

@@ -145,3 +145,13 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 	result = info.Result().(*api.R)
 	return nil
 }
+
+func CancelTto(id uint) (err error) {
+	update := invoker.Db.Model(&model.TtoInfo{}).Where("id = ?", id).Update("tto_status", "1")
+	if update.Error != nil {
+		return update.Error
+	} else if update.RowsAffected == 0 {
+		return errors.New("记录不存在")
+	}
+	return nil
+}

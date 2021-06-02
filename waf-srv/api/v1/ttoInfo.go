@@ -130,3 +130,25 @@ func GetTtoInfoList(c *gin.Context) {
 		}, "获取成功", c)
 	}
 }
+
+func RegisterTto(c *gin.Context) {
+	var ttoInfo model.TtoInfo
+	_ = c.ShouldBindJSON(&ttoInfo)
+	if err := service.UpdateTtoInfo(ttoInfo); err != nil {
+		invoker.Logger.Error("更新失败!", zap.Any("err", err))
+		api.FailWithMessage("更新失败", c)
+	} else {
+		api.OkWithMessage("更新成功", c)
+	}
+}
+
+func CancelTto(c *gin.Context) {
+	var ttoInfo model.TtoInfo
+	_ = c.ShouldBindJSON(&ttoInfo)
+	if err := service.CancelTto(ttoInfo.ID); err != nil {
+		invoker.Logger.Error("注销失败!", zap.Any("err", err))
+		api.FailWithMessage("注销失败", c)
+	} else {
+		api.OkWithMessage("注销成功", c)
+	}
+}
