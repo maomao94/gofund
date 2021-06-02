@@ -10,7 +10,7 @@ import (
 // 如果含有time.Time 请自行import time包
 type TtoInfo struct {
 	orm.GVA_MODEL
-	Reference    int       `json:"reference" form:"reference" gorm:"column:reference;comment:引用;type:bigint;size:19;"`
+	Reference    uint      `json:"reference" form:"reference" gorm:"column:reference;comment:引用;type:bigint;size:19;"`
 	RegisterTime time.Time `json:"registerTime" form:"registerTime" gorm:"column:register_time;comment:注册时间;type:datetime;"`
 	TtoType      string    `json:"ttoType" form:"ttoType" gorm:"column:tto_type;comment:类型（全局/局部）0:全局 1：局部;type:varchar(1);size:1;"`
 	TtoStatus    string    `json:"ttoStatus" form:"ttoStatus" gorm:"column:tto_status;comment:STATUS状态 0：未执行 1：已执行;type:varchar(1);size:1;"`
