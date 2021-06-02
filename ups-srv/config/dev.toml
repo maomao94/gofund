@@ -1,7 +1,7 @@
 [logger.default]
 level = "info"
 [trace.jaeger] # 启用链路的核心配置
-ServiceName = "waf-srv"
+ServiceName = "ups-srv"
 [server.http]
 port = 9211
 [redis.waf]
@@ -25,4 +25,4 @@ maxOpenConns = 100
 #[registry]
 #connectTimeout = "1s"
 #secure = false
-#name = "ups_srv"
+#name = "ups-srv"

@@ -14,7 +14,7 @@ enableDistributedTask = true			# 是否分布式任务，默认否，如果存�
 enableImmediatelyRun = false			# 是否立刻执行，默认否
 enableSeconds = true				# 是否使用秒作解析器，默认否
 spec = "*/1 * * * * *"					# 执行时间
-delayExecType = "skip"					# skip，queue，concurrent，如果上一个任务执行较慢，到达了新任务执行时间，那么新任务选择跳过，排队，并发执行的策略，新任务默认选择skip策略
+delayExecType = "concurrent"					# skip，queue，concurrent，如果上一个任务执行较慢，到达了新任务执行时间，那么新任务选择跳过，排队，并发执行的策略，新任务默认选择skip策略
 [redis.waf]
 debug = true
 addr = "127.0.0.1:6379"
@@ -36,6 +36,6 @@ maxOpenConns = 100
 #[registry]
 #connectTimeout = "1s"
 #secure = false
-#name = "wafs_srv"
+#name = "wafs-srv"
 #[grpc.upssrv]
 #addr = "etcd:///ups-srv"

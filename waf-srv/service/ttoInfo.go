@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"strconv"
 	"sync"
 	"time"
 	"waf-srv/model"
@@ -93,9 +94,15 @@ func GetTtoInfoInfoList(info request.TtoInfoSearch) (err error, list interface{}
 
 // 执行超时转发逻辑
 func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.WaitGroup) error {
-	// todo 分布式锁
+	ctx := context.Background()
 	startTime := time.Now()
 	result := new(api.R)
+	key := "tto_id" + strconv.Itoa(int(ttoInfo.ID))
+	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, key, 10*time.Second)
+	if err != nil {
+		invoker.Logger.Error("lock tto_id error", zap.Error(err))
+		return errors.New("lock tto_id error")
+	}
 	defer func() {
 		if result.IsSuccess() {
 			// 更新成已执行
@@ -104,6 +111,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 				invoker.Logger.Error("update tto error", zap.Error(err))
 			}
 		}
+		lock.Release(ctx)
 		requestTime := uint64(helper.DiffNano(startTime))
 		requestResults := &model.RequestResults{
 			Time:      requestTime,
@@ -120,7 +128,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 		invoker.Logger.Error("callSrvHttpComp is not register", zap.String("key", ttoInfo.CallSrvName))
 		return errors.New("callSrvHttpComp is not register")
 	}
-	span, ctx := etrace.StartSpanFromContext(context.Background(), "callHTTP()")
+	span, ctx := etrace.StartSpanFromContext(ctx, "callHTTP()")
 	defer span.Finish()
 	req := callSrvHttpComp.R()
 	// Inject traceId Into Header

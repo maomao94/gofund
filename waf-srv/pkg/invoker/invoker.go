@@ -37,9 +37,9 @@ func Init() error {
 	RedisStub = eredis.Load("redis.waf").Build(eredis.WithStub())
 	EcronLocker = ecronlock.DefaultContainer().Build(ecronlock.WithClient(RedisStub))
 	UpsHttpComp = ehttp.Load("http.ups").Build()
-	RegisterCallSrvHttpComp("ups", UpsHttpComp)
+	RegisterCallSrvHttpComp("ups-srv", UpsHttpComp)
 	WafHttpComp = ehttp.Load("http.waf").Build()
-	RegisterCallSrvHttpComp("waf", WafHttpComp)
+	RegisterCallSrvHttpComp("waf-srv", WafHttpComp)
 	//EtcdClient = eetcd.Load("etcd").Build()
 	//EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
 
