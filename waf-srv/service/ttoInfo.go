@@ -134,6 +134,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *statistics.RequestResults, wg *sy
 	req := callSrvHttpComp.R()
 	// Inject traceId Into Header
 	c1 := etrace.HeaderInjector(ctx, req.Header)
+	// 默认2s超时
 	info, err := req.SetContext(c1).
 		SetBody(ttoInfo).
 		SetResult(&api.R{}).
