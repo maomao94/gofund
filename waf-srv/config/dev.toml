@@ -16,7 +16,7 @@ enableSeconds = true				# 是否使用秒作解析器，默认否
 spec = "*/1 * * * * *"					# 执行时间
 delayExecType = "skip"					# skip，queue，concurrent，如果上一个任务执行较慢，到达了新任务执行时间，那么新任务选择跳过，排队，并发执行的策略，新任务默认选择skip策略
 [redis.waf]
-debug = true
+debug = false
 addr = "127.0.0.1:6379"
 ReadTimeout = "10s"
 WriteTimeout = "10s"
@@ -24,7 +24,7 @@ WriteTimeout = "10s"
 port = 9113
 [mysql.waf]
 connMaxLifetime = "300s"
-debug = true
+debug = false
 dsn = "root:123456@tcp(127.0.0.1:3306)/waf?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local"
 level = "panic"
 maxIdleConns = 50
