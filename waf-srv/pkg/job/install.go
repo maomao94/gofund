@@ -88,9 +88,9 @@ func CronTtoInfo() ecron.Ecron {
 			return err
 		}
 		// 执行转发逻辑
-		for _, ttoinfo := range ttoinfos {
+		for v, ttoinfo := range ttoinfos {
 			wg.Add(1)
-			go service.Dispose(ttoinfo, ch, &wg)
+			go service.Dispose(uint64(v), ttoinfo, ch, &wg)
 		}
 		// 等待所有的数据都发送完成
 		wg.Wait()

@@ -94,7 +94,7 @@ func GetTtoInfoInfoList(info request2.TtoInfoSearch) (err error, list interface{
 }
 
 // 执行超时转发逻辑
-func Dispose(ttoInfo model.TtoInfo, ch chan<- *statistics.RequestResults, wg *sync.WaitGroup) error {
+func Dispose(chanID uint64, ttoInfo model.TtoInfo, ch chan<- *statistics.RequestResults, wg *sync.WaitGroup) error {
 	ctx := context.Background()
 	startTime := time.Now()
 	result := new(api.R)
@@ -119,7 +119,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *statistics.RequestResults, wg *sy
 			IsSucceed: result.IsSuccess(),
 			ErrCode:   result.Code,
 		}
-		requestResults.SetID(uint64(ttoInfo.ID), uint64(ttoInfo.Reference))
+		requestResults.SetID(chanID, uint64(ttoInfo.ID))
 		ch <- requestResults
 		wg.Done()
 	}()
