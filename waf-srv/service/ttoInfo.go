@@ -100,21 +100,9 @@ func Dispose(chanID uint64, ttoInfo model.TtoInfo, ch chan<- *statistics.Request
 	result := new(api.R)
 	key := "tto_id" + strconv.Itoa(int(ttoInfo.ID))
 	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, key, 3*time.Second)
-	if err != nil {
-		invoker.Logger.Warn("lock tto_id error", zap.Error(err), zap.String("key", key))
-		return errors.New("lock tto_id error")
-	}
+	// 获取锁异常和成功获取锁都要执行的defer，否则会导致wg一直等待，ch一直range，无法关闭。导致定时器一直启动，该任务一直在执行
 	defer func() {
 		lock.Release(ctx)
-	}()
-	defer func() {
-		if result.IsSuccess() {
-			// 更新成已执行
-			err := invoker.Db.Model(&ttoInfo).Update("tto_status", "1").Error
-			if err != nil {
-				invoker.Logger.Error("update tto error", zap.Error(err))
-			}
-		}
 		requestTime := uint64(helper.DiffNano(startTime))
 		requestResults := &statistics.RequestResults{
 			Time:      requestTime,
@@ -124,6 +112,19 @@ func Dispose(chanID uint64, ttoInfo model.TtoInfo, ch chan<- *statistics.Request
 		requestResults.SetID(chanID, uint64(ttoInfo.ID))
 		ch <- requestResults
 		wg.Done()
+	}()
+	if err != nil {
+		invoker.Logger.Warn("lock tto_id error", zap.Error(err), zap.String("key", key))
+		return errors.New("lock tto_id error")
+	}
+	defer func() {
+		if result.IsSuccess() {
+			// 更新成已执行
+			err := invoker.Db.Model(&ttoInfo).Update("tto_status", "1").Error
+			if err != nil {
+				invoker.Logger.Error("update tto error", zap.Error(err))
+			}
+		}
 	}()
 	// http 调用
 	callSrvHttpComp := invoker.CallSrvHttpComps[ttoInfo.CallSrvName]
