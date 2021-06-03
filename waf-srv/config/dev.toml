@@ -25,6 +25,7 @@ port = 9113
 [mysql.waf]
 connMaxLifetime = "300s"
 debug = false
+SlowLogThreshold = "300ms"
 dsn = "root:123456@tcp(127.0.0.1:3306)/waf?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local"
 level = "panic"
 maxIdleConns = 50
