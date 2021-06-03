@@ -137,8 +137,9 @@ func GetTtoInfoList(c *gin.Context) {
 //    "expiredTime": 5000
 //}
 func RegisterTto(c *gin.Context) {
-	var ttoInfo model.TtoInfo
-	_ = c.ShouldBindJSON(&ttoInfo)
+	var registerTto request.RegisterTto
+	_ = c.ShouldBindJSON(&registerTto)
+	ttoInfo := model.TtoInfo{CallSrvName: registerTto.CallSrvName, CallMethod: registerTto.CallMethod, ExpiredTime: registerTto.ExpiredTime}
 	if err := service.RegisterTto(ttoInfo); err != nil {
 		invoker.Logger.Error("注册失败!", zap.Any("err", err))
 		api.FailWithMessage("注册失败", c)

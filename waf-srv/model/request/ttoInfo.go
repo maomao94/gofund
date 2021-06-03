@@ -14,3 +14,9 @@ type TtoInfoSearch struct {
 type CancelTto struct {
 	ID uint `json:"id,omitempty"`
 }
+
+type RegisterTto struct {
+	CallSrvName string `json:"CallSrvName"`
+	CallMethod  string `json:"callMethod"`
+	ExpiredTime int    `json:"expiredTime"`
+}
