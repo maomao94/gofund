@@ -1,11 +1,13 @@
 package main
 
 import (
+	"ups-srv/pkg/invoker"
+	"ups-srv/pkg/job"
+	"ups-srv/pkg/router"
+
 	"github.com/gotomicro/ego"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/gotomicro/ego/server/egovernor"
-	"ups-srv/pkg/invoker"
-	"ups-srv/pkg/job"
 )
 
 //  export EGO_DEBUG=true EGO_NAME=ups-srv && go run main.go --config=config/dev.toml --job=install
@@ -19,6 +21,7 @@ func main() {
 		Serve(
 			egovernor.Load("server.governor").Build(),
 			//router.ServeGRPC(),
+			router.GetRouter(),
 		).
 		Run(); err != nil {
 		elog.Panic(err.Error())

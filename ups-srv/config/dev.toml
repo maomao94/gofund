@@ -9,6 +9,8 @@ addr = "http://127.0.0.1:9111" # 开启后并加上export EGO_DEBUG=true，可�
 [redis.ups]
 debug = true
 addr = "127.0.0.1:6379"
+ReadTimeout = "10s"
+WriteTimeout = "10s"
 [server.governor]
 port = 9213
 [mysql.ups]

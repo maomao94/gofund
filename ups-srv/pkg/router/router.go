@@ -1,10 +1,12 @@
 package router
 
 import (
+	v1 "ups-srv/api/v1"
+	"ups-srv/pkg/invoker"
+
 	"github.com/gotomicro/ego/server/egin"
 	"github.com/gotomicro/ego/server/egrpc"
 	"github.com/hehanpeng/gofund/proto/fund/gen/upssrv"
-	"ups-srv/pkg/invoker"
 )
 
 type Ups struct {
@@ -17,9 +19,12 @@ func ServeGRPC() *egrpc.Component {
 	return srv
 }
 
-
 func GetRouter() *egin.Component {
-	r := invoker.Gin
-	//r.GET("/api/test",api.Test)
-	return r
+	Router := invoker.Gin
+	// 方便统一添加路由组前缀 多服务器上线使用
+	PublicGroup := Router.Group("api")
+	{
+		PublicGroup.POST("hello", v1.Hello)
+	}
+	return Router
 }
