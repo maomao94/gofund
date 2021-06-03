@@ -25,6 +25,7 @@ func GetRouter() *egin.Component {
 	PublicGroup := Router.Group("api")
 	{
 		PublicGroup.POST("hello", v1.Hello)
+		PublicGroup.GET("testAli", v1.TestAli)
 	}
 	return Router
 }
