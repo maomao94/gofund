@@ -82,6 +82,7 @@ func CronTtoInfo() ecron.Ecron {
 		}
 		concurrent := len(ttoInfos)
 		if concurrent == 0 {
+			invoker.Logger.Info("cronTtoInfo no data")
 			return nil
 		}
 		// 设置接收数据缓存
