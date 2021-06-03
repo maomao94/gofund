@@ -75,7 +75,10 @@ func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
 		// 查找数据 确定协程数
 		var ttoInfos []model.TtoInfo
-		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoInfos).Error
+		// 限制一次性拉1万
+		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).
+			Limit(10000).
+			Find(&ttoInfos).Error
 		if err != nil {
 			invoker.Logger.Error("cronTtoInfo error", zap.Error(err))
 			return err
