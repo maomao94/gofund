@@ -73,6 +73,17 @@ func CronJob2() ecron.Ecron {
 // 超时转发
 func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
+		// 查找数据 确定协程数
+		var ttoInfos []model.TtoInfo
+		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoInfos).Error
+		if err != nil {
+			invoker.Logger.Error("cronTtoInfo error", zap.Error(err))
+			return err
+		}
+		concurrent := len(ttoInfos)
+		if concurrent == 0 {
+			return nil
+		}
 		// 设置接收数据缓存
 		ch := make(chan *statistics.RequestResults, 1000)
 		var (
@@ -80,17 +91,11 @@ func CronTtoInfo() ecron.Ecron {
 			wgReceiving sync.WaitGroup // 数据处理完成
 		)
 		wgReceiving.Add(1)
-		go statistics.ReceivingResults(1, ch, &wgReceiving)
-		var ttoinfos []model.TtoInfo
-		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).Find(&ttoinfos).Error
-		if err != nil {
-			invoker.Logger.Error("cronTtoInfo error", zap.Error(err))
-			return err
-		}
+		go statistics.ReceivingResults(uint64(concurrent), ch, &wgReceiving)
 		// 执行转发逻辑
-		for v, ttoinfo := range ttoinfos {
+		for v, ttoInfo := range ttoInfos {
 			wg.Add(1)
-			go service.Dispose(uint64(v), ttoinfo, ch, &wg)
+			go service.DealTto(uint64(v), ttoInfo, ch, &wg)
 		}
 		// 等待所有的数据都发送完成
 		wg.Wait()
