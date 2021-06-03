@@ -105,6 +105,9 @@ func Dispose(chanID uint64, ttoInfo model.TtoInfo, ch chan<- *statistics.Request
 		return errors.New("lock tto_id error")
 	}
 	defer func() {
+		lock.Release(ctx)
+	}()
+	defer func() {
 		if result.IsSuccess() {
 			// 更新成已执行
 			err := invoker.Db.Model(&ttoInfo).Update("tto_status", "1").Error
@@ -112,7 +115,6 @@ func Dispose(chanID uint64, ttoInfo model.TtoInfo, ch chan<- *statistics.Request
 				invoker.Logger.Error("update tto error", zap.Error(err))
 			}
 		}
-		lock.Release(ctx)
 		requestTime := uint64(helper.DiffNano(startTime))
 		requestResults := &statistics.RequestResults{
 			Time:      requestTime,
