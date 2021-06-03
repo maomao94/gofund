@@ -58,5 +58,5 @@ func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
 	time.Sleep(1900 * time.Millisecond)
-	api.Fail(c)
+	api.Ok(c)
 }
