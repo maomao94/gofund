@@ -57,6 +57,6 @@ func HelloLock(c *gin.Context) {
 func Hello(c *gin.Context) {
 	var ttoInfo model.TtoInfo
 	_ = c.ShouldBindJSON(&ttoInfo)
-	time.Sleep(1900 * time.Millisecond)
+	//time.Sleep(1900 * time.Millisecond)
 	api.Ok(c)
 }
