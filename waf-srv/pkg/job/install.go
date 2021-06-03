@@ -74,7 +74,7 @@ func CronJob2() ecron.Ecron {
 func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
 		// 设置接收数据缓存
-		ch := make(chan *model.RequestResults, 1000)
+		ch := make(chan *statistics.RequestResults, 1000)
 		var (
 			wg          sync.WaitGroup // 发送数据完成
 			wgReceiving sync.WaitGroup // 数据处理完成

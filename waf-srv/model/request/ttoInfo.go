@@ -10,3 +10,7 @@ type TtoInfoSearch struct {
 	model.TtoInfo
 	api.PageInfo
 }
+
+type CancelTto struct {
+	ID uint `json:"id,omitempty"`
+}

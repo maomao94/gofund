@@ -7,8 +7,9 @@ import (
 	"sync"
 	"time"
 	"waf-srv/model"
+	request2 "waf-srv/model/request"
 	"waf-srv/pkg/invoker"
-	"waf-srv/request"
+	"waf-srv/statistics"
 
 	"github.com/hehanpeng/gofund/common/helper"
 
@@ -80,7 +81,7 @@ func GetTtoInfo(id uint) (err error, ttoInfo model.TtoInfo) {
 //@param: info req.TtoInfoSearch
 //@return: err error, list interface{}, total int64
 
-func GetTtoInfoInfoList(info request.TtoInfoSearch) (err error, list interface{}, total int64) {
+func GetTtoInfoInfoList(info request2.TtoInfoSearch) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
@@ -93,7 +94,7 @@ func GetTtoInfoInfoList(info request.TtoInfoSearch) (err error, list interface{}
 }
 
 // 执行超时转发逻辑
-func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.WaitGroup) error {
+func Dispose(ttoInfo model.TtoInfo, ch chan<- *statistics.RequestResults, wg *sync.WaitGroup) error {
 	ctx := context.Background()
 	startTime := time.Now()
 	result := new(api.R)
@@ -113,7 +114,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *model.RequestResults, wg *sync.Wa
 		}
 		lock.Release(ctx)
 		requestTime := uint64(helper.DiffNano(startTime))
-		requestResults := &model.RequestResults{
+		requestResults := &statistics.RequestResults{
 			Time:      requestTime,
 			IsSucceed: result.IsSuccess(),
 			ErrCode:   result.Code,

@@ -2,8 +2,8 @@ package v1
 
 import (
 	"waf-srv/model"
+	"waf-srv/model/request"
 	"waf-srv/pkg/invoker"
-	"waf-srv/request"
 	"waf-srv/service"
 
 	"github.com/hehanpeng/gofund/common/global/api"
@@ -151,9 +151,9 @@ func RegisterTto(c *gin.Context) {
 //    "ID": 1
 //}
 func CancelTto(c *gin.Context) {
-	var ttoInfo model.TtoInfo
-	_ = c.ShouldBindJSON(&ttoInfo)
-	if err := service.CancelTto(ttoInfo.ID); err != nil {
+	var cancelTto request.CancelTto
+	_ = c.ShouldBindJSON(&cancelTto)
+	if err := service.CancelTto(cancelTto.ID); err != nil {
 		invoker.Logger.Error("注销失败!", zap.Any("err", err))
 		api.FailWithMessage("注销失败", c)
 	} else {

@@ -7,7 +7,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"waf-srv/model"
 	"waf-srv/pkg/invoker"
 
 	"golang.org/x/text/language"
@@ -23,7 +22,7 @@ var (
 // ReceivingResults 接收结果并处理
 // 统计的时间都是纳秒，显示的时间 都是毫秒
 // concurrent 并发数
-func ReceivingResults(concurrent uint64, ch <-chan *model.RequestResults, wg *sync.WaitGroup) {
+func ReceivingResults(concurrent uint64, ch <-chan *RequestResults, wg *sync.WaitGroup) {
 	defer func() {
 		wg.Done()
 	}()
