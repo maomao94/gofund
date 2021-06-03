@@ -19,8 +19,8 @@ delayExecType = "skip"					# skip，queue，concurrent，如果上一个任务�
 debug = false
 addr = "127.0.0.1:6379"
 DialTimeout = "5s"
-ReadTimeout = "15s"
-WriteTimeout = "15s"
+ReadTimeout = "5s"
+WriteTimeout = "5s"
 [server.governor]
 port = 9113
 [mysql.waf]
