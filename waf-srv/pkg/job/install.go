@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	limit = 1000
+	limit = 10000
 )
 
 func InstallComponent() *ejob.Component {
