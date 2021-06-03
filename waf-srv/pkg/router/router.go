@@ -19,7 +19,7 @@ func GetRouter() *egin.Component {
 
 		// 超时转发相关
 		PublicGroup.POST("registerTto", v1.RegisterTto) // 注册tto
-		PublicGroup.PUT("cancelTto", v1.CancelTto)      // 注销tto
+		PublicGroup.POST("cancelTto", v1.CancelTto)     // 注销tto
 
 		InitTtoInfoRouter(PublicGroup)
 	}
