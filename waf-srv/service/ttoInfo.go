@@ -99,7 +99,7 @@ func Dispose(ttoInfo model.TtoInfo, ch chan<- *statistics.RequestResults, wg *sy
 	startTime := time.Now()
 	result := new(api.R)
 	key := "tto_id" + strconv.Itoa(int(ttoInfo.ID))
-	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, key, 10*time.Second)
+	lock, err := invoker.RedisStub.LockClient().Obtain(ctx, key, 3*time.Second)
 	if err != nil {
 		invoker.Logger.Error("lock tto_id error", zap.Error(err))
 		return errors.New("lock tto_id error")
