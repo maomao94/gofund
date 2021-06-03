@@ -5,6 +5,8 @@
 用于处理系统分布式不一致问题
 ### 超时转发
 ### 存储转发
+### 如何使用
+![](./docs/images/use_waf.png)
 ## 参考
 - https://github.com/gotomicro/ego
 - https://github.com/flipped-aurora/gin-vue-admin
