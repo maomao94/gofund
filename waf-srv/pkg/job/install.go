@@ -19,6 +19,10 @@ import (
 	"github.com/gotomicro/ego/task/ejob"
 )
 
+var (
+	limit = 5000
+)
+
 func InstallComponent() *ejob.Component {
 	return ejob.DefaultContainer().Build(
 		ejob.WithName("install"),
@@ -75,9 +79,10 @@ func CronTtoInfo() ecron.Ecron {
 	job := func(ctx context.Context) error {
 		// 查找数据 确定协程数
 		var ttoInfos []model.TtoInfo
-		// 限制一次性拉1万
+		// 结合系统性能限制拉取条数
+		// 如果系统性能差，考虑超时的更新成其他状态额外处理
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).
-			Limit(10000).
+			Limit(limit).
 			Find(&ttoInfos).Error
 		if err != nil {
 			invoker.Logger.Error("cronTtoInfo error", zap.Error(err))
