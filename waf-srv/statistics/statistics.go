@@ -90,9 +90,11 @@ func ReceivingResults(concurrent uint64, ch <-chan *RequestResults, wg *sync.Wai
 	endTime := uint64(time.Now().UnixNano())
 	requestTime = endTime - statTime
 	calculateData(concurrent, processingTime, requestTime, maxTime, minTime, successNum, failureNum, chanIDLen, errCode)
+	fmt.Printf("\n\n")
 	invoker.Logger.Debug("*************************  结果 stat  ****************************")
 	invoker.Logger.Debugf("请求总数: %d 总请求时间: %.3f秒 successNum: %d, failureNum: %d", successNum+failureNum, float64(requestTime)/1e9, successNum, failureNum)
 	invoker.Logger.Debug("*************************  结果 end   ****************************")
+	fmt.Printf("\n\n")
 }
 
 // calculateData 计算数据
@@ -128,6 +130,7 @@ func calculateData(concurrent, processingTime, requestTime, maxTime, minTime, su
 // header 打印表头信息
 func header() {
 	// 打印的时长都为毫秒 总请数
+	fmt.Printf("\n\n")
 	invoker.Logger.Debug("─────┬───────┬───────┬───────┬────────┬────────┬────────┬────────┬────────")
 	invoker.Logger.Debug(" 耗时│ 并发数│ 成功数│ 失败数│   qps  │最长耗时│最短耗时│平均耗时│ 错误码")
 	invoker.Logger.Debug("─────┼───────┼───────┼───────┼────────┼────────┼────────┼────────┼────────")
