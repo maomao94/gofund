@@ -18,6 +18,8 @@ delayExecType = "skip"					# skip，queue，concurrent，如果上一个任务�
 [redis.waf]
 debug = false
 addr = "127.0.0.1:6379"
+ReadTimeout = "15s"
+WriteTimeout = "15s"
 [server.governor]
 port = 9113
 [mysql.waf]
