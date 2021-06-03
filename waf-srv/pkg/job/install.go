@@ -20,7 +20,7 @@ import (
 )
 
 var (
-	limit = 5000
+	limit = 1000
 )
 
 func InstallComponent() *ejob.Component {
@@ -80,7 +80,7 @@ func CronTtoInfo() ecron.Ecron {
 		// 查找数据 确定协程数
 		var ttoInfos []model.TtoInfo
 		// 结合系统性能限制拉取条数
-		// 如果系统性能差，考虑超时的更新成其他状态额外处理
+		// 如果系统性能差，拉取逻辑需要优化
 		err := invoker.Db.Where("tto_status = ? and execute_time <= ?", 0, time.Now()).
 			Limit(limit).
 			Find(&ttoInfos).Error
