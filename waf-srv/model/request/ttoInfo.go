@@ -16,7 +16,11 @@ type CancelTto struct {
 }
 
 type RegisterTto struct {
+	Reference   int    `json:"reference"`
+	TtoType     string `json:"tto_type"`
+	BizType     string `json:"biz_type"`
 	CallSrvName string `json:"CallSrvName"`
 	CallMethod  string `json:"callMethod"`
 	ExpiredTime int    `json:"expiredTime"`
+	Ext1        string `json:"ext_1"`
 }

@@ -6,6 +6,8 @@ import (
 	"waf-srv/pkg/invoker"
 	"waf-srv/service"
 
+	"github.com/hehanpeng/gofund/common/util"
+
 	"github.com/hehanpeng/gofund/common/global/api"
 
 	"github.com/gin-gonic/gin"
@@ -154,6 +156,7 @@ func RegisterTto(c *gin.Context) {
 func CancelTto(c *gin.Context) {
 	var cancelTto request.CancelTto
 	_ = c.ShouldBindJSON(&cancelTto)
+	util.Verify(cancelTto, util.IdVerify)
 	if err := service.CancelTto(cancelTto.ID); err != nil {
 		invoker.Logger.Error("注销失败!", zap.Any("err", err))
 		api.FailWithMessage("注销失败", c)
