@@ -50,7 +50,7 @@ func TestAli(c *gin.Context) {
 		api.FailWithMessage("error", c)
 		return
 	}
-	_, err = alipay.VerifySyncSign("", aliRsp.SignData, aliRsp.Sign)
+	_, err = alipay.VerifySyncSign("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2TTrTo6Z9ZdrJRELO1/LsqpxFWPpdtWOjQmKhXeAlWf5QLTM612ClXxykk9q9Nf3pgByQNmC1ipFhmLISV5e/JgR1xenkcC5p4AU8LCT9IOJb413Qem9KlEFpUkgEV+Xqcq1LxKO+6YdZgt/3qoqa6h7RsTB52BL782TR8+qXVETmxiAXP7vIMhATulbvwZpvdKFywmFzyRt5XAVM49nD1rdPmtayfgUqkTGpZtOE1Lo80SNxAywPRQJDZ7umRqP88ipahhT5HB0e+WH7IgvYHtRtTw5VXupdnQigHWKBL7muTGan8JM3a1aOI7xBp7Aonw7nil6Qs9WnNPL3xckmwIDAQAB", aliRsp.SignData, aliRsp.Sign)
 	if err != nil {
 		invoker.Logger.Error("error", elog.FieldErr(err))
 		api.FailWithMessage("error", c)
