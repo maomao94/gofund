@@ -12,6 +12,7 @@ require (
 	github.com/iGoogle-ink/gopay v1.5.40
 	go.uber.org/zap v1.17.0
 	google.golang.org/grpc v1.38.0
+	google.golang.org/grpc/examples v0.0.0-20210603231021-5c164e2b8f22 // indirect
 	waf-srv v0.0.0-00010101000000-000000000000
 )
 
