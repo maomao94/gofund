@@ -31,3 +31,9 @@ require (
 	gorm.io/driver/mysql v1.1.0 // indirect
 	gorm.io/driver/postgres v1.1.0 // indirect
 )
+
+replace (
+	github.com/hehanpeng/gofund/common => ../common
+	github.com/hehanpeng/gofund/proto => ../proto
+	waf-srv => ../waf-srv
+)
