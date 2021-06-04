@@ -42,7 +42,7 @@ func TestAli(c *gin.Context) {
 	bm := make(gopay.BodyMap)
 	bm.Set("subject", "预创建创建订单")
 	bm.Set("out_trade_no", "GZ201907301040355704")
-	bm.Set("total_amount", "100")
+	bm.Set("total_amount", "1000")
 	//创建订单
 	aliRsp, err := client.TradePrecreate(bm)
 	if err != nil {
