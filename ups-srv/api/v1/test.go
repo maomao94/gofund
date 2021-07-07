@@ -4,11 +4,9 @@ import (
 	"ups-srv/pkg/invoker"
 	"waf-srv/model"
 
+	"github.com/go-pay/gopay"
+	"github.com/go-pay/gopay/alipay"
 	"github.com/gotomicro/ego/core/elog"
-
-	"github.com/iGoogle-ink/gopay"
-
-	"github.com/iGoogle-ink/gopay/alipay"
 
 	"github.com/hehanpeng/gofund/common/global/api"
 
