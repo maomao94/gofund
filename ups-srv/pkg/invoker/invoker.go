@@ -7,23 +7,26 @@ import (
 
 	"github.com/gotomicro/ego/server/egin"
 
+	"github.com/gotomicro/ego-component/eetcd"
+	"github.com/gotomicro/ego-component/eetcd/registry"
 	"github.com/gotomicro/ego-component/egorm"
 	"github.com/gotomicro/ego-component/eredis"
 	"github.com/gotomicro/ego/core/elog"
 	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/status"
 )
 
 var (
-	Logger      *elog.Component
-	Gin         *egin.Component
-	Db          *egorm.Component
-	RedisStub   *eredis.Component
-	WafHttpComp *ehttp.Component
-	//EtcdClient   *eetcd.Component
-	//EtcdRegistry *registry.Component
+	Logger       *elog.Component
+	Gin          *egin.Component
+	Db           *egorm.Component
+	RedisStub    *eredis.Component
+	WafHttpComp  *ehttp.Component
+	EtcdClient   *eetcd.Component
+	EtcdRegistry *registry.Component
 )
 
 func Init() error {
@@ -32,11 +35,11 @@ func Init() error {
 	Db = egorm.Load("mysql.ups").Build()
 	RedisStub = eredis.Load("redis.ups").Build(eredis.WithStub())
 	WafHttpComp = ehttp.Load("http.waf").Build()
-	//EtcdClient = eetcd.Load("etcd").Build()
-	//EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
+	EtcdClient = eetcd.Load("etcd").Build()
+	EtcdRegistry = registry.Load("registry").Build(registry.WithClientEtcd(EtcdClient))
 
 	// 必须注册在grpc前面
-	//resolver.Register("etcd", EtcdRegistry)
+	resolver.Register("etcd", EtcdRegistry)
 	return nil
 }
 

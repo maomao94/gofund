@@ -11,7 +11,7 @@ require (
 	github.com/hehanpeng/gofund/common v0.0.0-20210604012407-335b57ce0918
 	github.com/hehanpeng/gofund/proto v0.0.0-20210604012407-335b57ce0918
 	go.uber.org/zap v1.17.0
-	google.golang.org/grpc v1.38.0
+	google.golang.org/grpc v1.39.0
 	waf-srv v0.0.0-00010101000000-000000000000
 )
 
