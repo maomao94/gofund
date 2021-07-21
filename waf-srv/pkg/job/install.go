@@ -30,7 +30,7 @@ func InstallComponent() *ejob.Component {
 	)
 }
 
-func runInstall(ctx context.Context) error {
+func runInstall(ctx ejob.Context) error {
 	models := []interface{}{
 		//&model.SysApi{},
 		&model.TtoInfo{},

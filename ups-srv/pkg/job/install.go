@@ -1,7 +1,6 @@
 package job
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/gotomicro/ego/task/ejob"
@@ -14,7 +13,7 @@ func InstallComponent() *ejob.Component {
 	)
 }
 
-func runInstall(ctx context.Context) error {
+func runInstall(ctx ejob.Context) error {
 	//models := []interface{}{
 	//	&mysql.Topic{},
 	//	&mysql.TopicCate{},
