@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-pay/gopay v1.5.49
 	github.com/gotomicro/ego v0.6.0
+	github.com/gotomicro/ego-component/eetcd v0.2.1
 	github.com/gotomicro/ego-component/egorm v0.2.1
 	github.com/gotomicro/ego-component/eredis v0.2.2
 	github.com/hehanpeng/gofund/common v0.0.0-20210604012407-335b57ce0918
@@ -18,5 +19,6 @@ require (
 replace (
 	github.com/hehanpeng/gofund/common => ../common
 	github.com/hehanpeng/gofund/proto => ../proto
+	google.golang.org/grpc => google.golang.org/grpc v1.26.0
 	waf-srv => ../waf-srv
 )

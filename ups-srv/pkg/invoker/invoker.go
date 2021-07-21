@@ -3,6 +3,8 @@ package invoker
 import (
 	"fmt"
 
+	"github.com/gotomicro/ego/client/egrpc/resolver"
+
 	"github.com/gotomicro/ego/client/ehttp"
 
 	"github.com/gotomicro/ego/server/egin"
@@ -15,7 +17,6 @@ import (
 	"github.com/hehanpeng/gofund/proto/fund/gen/errcodepb"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/resolver"
 	"google.golang.org/grpc/status"
 )
 

@@ -20,7 +20,7 @@ func main() {
 		).
 		Serve(
 			egovernor.Load("server.governor").Build(),
-			//router.ServeGRPC(),
+			router.ServeGRPC(),
 			router.GetRouter(),
 		).
 		Run(); err != nil {
