@@ -14,7 +14,7 @@ port = 9213
 [mysql.ups]
 connMaxLifetime = "300s"
 debug = false
-dsn = "root:123456@tcp(127.0.0.1:3306)/ups?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local"
+dsn = "root:123456@tcp(127.0.0.1:3306)/gva?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=True&loc=Local"
 level = "panic"
 maxIdleConns = 50
 maxOpenConns = 100

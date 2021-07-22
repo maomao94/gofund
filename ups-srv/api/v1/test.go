@@ -4,6 +4,8 @@ import (
 	"ups-srv/pkg/invoker"
 	"waf-srv/model"
 
+	"github.com/google/uuid"
+
 	"github.com/go-pay/gopay"
 	"github.com/go-pay/gopay/alipay"
 	"github.com/gotomicro/ego/core/elog"
@@ -39,7 +41,7 @@ func TestAli(c *gin.Context) {
 	//请求参数
 	bm := make(gopay.BodyMap)
 	bm.Set("subject", "预创建创建订单")
-	bm.Set("out_trade_no", "GZ201907301040355704")
+	bm.Set("out_trade_no", uuid.New().String())
 	bm.Set("total_amount", "1000")
 	//创建订单
 	aliRsp, err := client.TradePrecreate(bm)

@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-pay/gopay v1.5.49
+	github.com/google/uuid v1.1.2
 	github.com/gotomicro/ego v0.6.0
 	github.com/gotomicro/ego-component/eetcd v0.2.2
 	github.com/gotomicro/ego-component/egorm v0.2.1
